@@ -76,7 +76,10 @@ def analyze(image, redact_values: bool):
         reasons = "\n".join(f"- {r}" for r in result["qa"]["reasons"])
         return None, f"**Rejected by document QA**\n\n{reasons}"
 
-    annotated = _draw_boxes(image, result["boxes"])
+    # Boxes live in the coordinate space of the image the pipeline OCR'd
+    # (preprocessed + deskewed); render the overlay on THAT image.
+    display = result.get("processed_image") or image
+    annotated = _draw_boxes(display, result["boxes"])
 
     v = result["validation"]
     verdict = "✅ VALID" if v["ok"] else "❌ ISSUES FOUND"
