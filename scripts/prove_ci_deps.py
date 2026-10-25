@@ -11,7 +11,17 @@ import venv
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-CI_DEPS = ["ruff", "pytest", "httpx", "fastapi", "python-multipart", "pillow", "numpy", "gradio"]
+CI_DEPS = [
+    "ruff",
+    "pytest",
+    "httpx",
+    "fastapi",
+    "python-multipart",
+    "pillow",
+    "numpy",
+    "gradio",
+    "opencv-python-headless",
+]
 
 
 def run(cmd: list[str], **kw) -> None:

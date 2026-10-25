@@ -18,7 +18,7 @@ jobs:
       # touches, proven by scripts/prove_ci_deps.sh locally. No model deps
       # (torch/paddle/transformers) and no weights are needed for unit tests.
       - run: >
-          pip install ruff pytest httpx fastapi python-multipart pillow numpy gradio
+          pip install ruff pytest httpx fastapi python-multipart pillow numpy gradio opencv-python-headless
       - run: ruff check .
       - run: python scripts/generate_golden.py
       - run: pytest -q
