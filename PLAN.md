@@ -56,5 +56,22 @@ Gradio demo. CPU-only, pretrained-only, license-clean (no AGPL).
 
 ## Current status
 
-- [x] Milestone 1 scaffold
-- [ ] Milestone 2 in progress
+- [x] M1 scaffold + validators + tests
+- [x] M2 synthetic generator + golden set (vision-QA'd, SPECIMEN watermarked)
+- [x] M3 document QA gates + tests
+- [x] M4 model integration: PaddleOCR 2.7.3 lines + layout priors, Florence-2
+      photo grounding (torch-before-paddle DLL order on Windows), ArcFace ONNX
+- [x] M5 FastAPI (hardened per audit: per-request tempdirs, upload caps) + Gradio demo
+- [x] M6 benchmark, 20 cards, real models: 11/13 fields >=95% exact, NIK 100%,
+      validation verdicts 20/20, mean 10.5 s/card; raw docs/benchmark.json
+- [x] M7 README assets from the live system (demo.gif, overlay, redaction pair,
+      swagger + gradio screenshots, all vision-QA'd); production README
+- [x] M8 Docker (weights baked), CI (ruff + unit + docker), MIT LICENSE, ruff clean,
+      53/53 tests; git init + commit e9db997
+- [ ] M9 publish prep handed to the user: push steps, portfolio entry, launch post,
+      application drafts. No publishing without the user's explicit go.
+
+Post-audit policy notes: NIK day 20/60 decodes literally (day_unknown flag +
+caveat on mismatch); impossible calendar dates rejected, never clamped;
+benchmark numbers come from real model runs only; fixed-layout fallback is
+disclosed in the README.
