@@ -23,11 +23,12 @@ A complete, honest eKYC pipeline for KTP (Kartu Tanda Penduduk) photos, built to
 
 The pipeline:
 
-1. **Document QA**: rejects blurry, glare-washed, skewed, or undersized inputs, with explicit reasons (never silent).
-2. **Field localization**: PaddleOCR text-line detection plus fixed-layout priors assigns every field row; Florence-2 phrase grounding pins the photo box.
-3. **Parsing and NIK validation**: 38-province administrative codes, the +40 female day encoding, cross-field checks of the decoded birth date and gender against the printed TTL and Jenis Kelamin. Impossible calendar dates are rejected, never clamped.
-4. **Face similarity** (experimental): ArcFace-family embeddings with the threshold stated next to every verdict.
-5. **Redaction**: blur NIK, alamat, and photo on output, because privacy defaults should not be opt-in.
+1. **Preprocessing** (real captures): exposure fix, raw-frame deskew, two-pass quad straightening, perspective warp onto the canonical canvas (details below).
+2. **Document QA**: rejects blurry, glare-washed, skewed, or undersized inputs, with explicit reasons (never silent).
+3. **Field localization**: PaddleOCR text lines; content-pinned assignment (values that name their own field pin it, with OCR-noise tolerance) with sequence alignment for free-text fields and layout priors as fallback; Florence-2 phrase grounding pins the photo box.
+4. **Parsing and NIK validation**: 38-province administrative codes, the +40 female day encoding, cross-field checks of the decoded birth date and gender against the printed TTL and Jenis Kelamin, TTL-date arbitration of competing NIK reads. Impossible calendar dates are rejected, never clamped. Authenticity notes (non-lifetime validity, header/NIK province disagreement) are reported as review signals.
+5. **Face similarity** (experimental): ArcFace-family embeddings with the threshold stated next to every verdict.
+6. **Redaction**: blur NIK, alamat, and photo on output, because privacy defaults should not be opt-in.
 
 Everything runs offline on a laptop CPU. No GPU, no API keys, no cloud calls.
 
@@ -114,16 +115,18 @@ These numbers describe performance on clean synthetic renders. Real captures now
 
 ## Real-photo handling
 
-The pipeline preprocesses every uploaded capture before QA:
+The pipeline preprocesses every uploaded capture before QA. Order matters:
 
-1. **Card localization**: contour-quad detection (with a CLAHE-boosted retry for dim shots) perspective-warps the card onto the canonical 850x540 canvas; edge-to-edge renders fall back to aspect resize.
-2. **Exposure fix**: CLAHE on the L channel when the capture is dim or flat.
-3. **Deskew retry + NIK refine**: after OCR, if the text rows still tilt, the image is rotated by the measured slope and re-OCR'd once; the NIK row is cropped, upscaled 3x, and re-read separately (small fonts over guilloche misread at full-image scale).
-4. **Shear-leveled pairing**: field assignment runs in coordinates leveled by the median OCR line angle, so tilted cards pair labels to values correctly.
+1. **Exposure fix first**: CLAHE on the L channel when the capture is dim or flat, so edge detection and OCR both see contrast.
+2. **Fine-rotate the RAW frame** (canvas expanded, nothing cropped), using the projection-profile skew of the text region.
+3. **Two-pass card straightening**: contour-quad detection (with a CLAHE-boosted retry for dim shots); the detected quad's own top/bottom edge angle pre-rotates the frame, the quad is re-detected on the straightened image, then the perspective warp lands the card on the canonical 850x540 canvas. The warp is the only stage that touches geometry afterwards, so rotations never stack. Edge-to-edge renders fall back to aspect resize with an optional inner-quad crop.
+4. **QA-driven skew retry**: if the text region still tilts past the gate, the image is rotated by exactly the QA-measured angle and re-verified, adopted only when flatter.
 
-Field assignment is content-driven (printed-label anchors with OCR-mangling tolerance, header/label exclusion, one-to-one label-value pairing), with the synthetic-geometry priors as a last-resort fallback.
+Field assignment after OCR is **content-pinned first, sequence-aligned second**: values that identify their own field (LAKI-LAKI/PEREMPUAN, the religion set, KAWIN/BELUM KAWIN, WNI/WNA, SEUMUR HIDUP, RT/RW digit patterns) pin their fields directly, with OCR-noise tolerance (FEREMPUAN still pins the gender); merged label+value lines pin from their embedded suffix; the remaining free-text fields pair by label order. Synthetic-geometry priors remain the last-resort fallback.
 
-**Validation on owner-provided real photos (3 samples, not a benchmark):** all three NIKs extracted exactly, including a dim tilted handheld shot; names/TTL/gender extracted with occasional single-glyph OCR noise; a non-genuine sample was flagged by the NIK-vs-TTL cross-field check and a non-lifetime-validity authenticity note. Real-photo support is validated on samples, not measured at scale: the field-accuracy table above remains synthetic-only.
+**NIK arbitration**: the full-image read competes with per-position-majority votes over six enhancement variants (x3/x5 scale, grayscale autocontrast, sharpening) of an upscaled NIK strip; the winner is the candidate whose decoded birth date matches a date printed on the card, because the NIK legally encodes the TTL date. **Authenticity notes** flag signals such as non-lifetime validity (e-KTP reads SEUMUR HIDUP) and a header province that disagrees with the NIK province code; they are signals for review, not forgery verdicts. Place names get digit-for-letter OCR repair (LE8AK becomes LEBAK) scoped strictly to the place segment.
+
+**Validation on owner-provided real photos (3 samples, not a benchmark):** two NIKs exact on all 16 digits and one at 15/16 (a single degraded glyph), including a dim tilted handheld shot; every field landed on the right label on all three; a non-genuine sample was flagged by the NIK-vs-TTL cross-field check plus a non-lifetime-validity authenticity note. Real-photo support is validated on samples, not measured at scale: the field-accuracy table above remains synthetic-only.
 
 ## Quickstart
 
@@ -135,7 +138,7 @@ pip install torch --index-url https://download.pytorch.org/whl/cpu   # CPU wheel
 pip install -r requirements-dev.txt
 
 python scripts/generate_golden.py          # synthetic golden set (PNGs are generated; only ground truth is tracked)
-pytest                                     # 59 tests, no weights needed
+pytest                                     # 60 tests, no weights needed
 uvicorn app.api:app --port 8765            # API + Swagger at /docs
 python demo/app.py                         # Gradio demo at :7860
 python scripts/benchmark.py                # reproduce the table above
@@ -148,7 +151,7 @@ First run downloads model weights (Florence-2-base ~0.4 GB, PaddleOCR ~20 MB, Ar
 | Endpoint | Method | What it does |
 |---|---|---|
 | `/health` | GET | Service heartbeat |
-| `/ktp/extract` | POST | QA + extraction + NIK validation. `mode=gold` (no upload, uses committed synthetic set) or `mode=model` (multipart image) |
+| `/ktp/extract` | POST | QA + preprocessing + extraction + NIK validation + authenticity notes. `mode=gold` (no upload, uses committed synthetic set) or `mode=model` (multipart image) |
 | `/redact` | POST | Blurred copy (NIK, alamat, photo by default). Reports skipped fields in `X-Skipped-Fields` |
 | `/match` | POST | Experimental crop similarity between two images, threshold stated in the response |
 
@@ -185,7 +188,7 @@ Uploads are size-capped (10 MB), decode-verified, and stored under server-contro
 
 ## Testing and CI
 
-- 59 tests: validators (structure, cross-field, impossible dates, placeholder caveat), generator invariants, QA gates, parsing, API hardening (path traversal, request isolation, upload limits, structured missing-NIK), redaction cleanup paths, barrier-synchronized request isolation, and Gradio wiring arity.
+- 60 tests: validators (structure, cross-field, impossible dates, placeholder caveat), generator invariants, QA gates, parsing (incl. place-name glyph repair), API hardening (path traversal, request isolation, upload limits, structured missing-NIK), redaction cleanup paths, barrier-synchronized request isolation, and Gradio wiring arity.
 - Model-dependent tests are marker-gated (`pytest -m models`) and excluded from CI; CI runs ruff + unit tests + docker build.
 - The security regression suite came out of an independent audit; every finding has a named test.
 
@@ -208,7 +211,7 @@ cek-dulu/
 ├── scripts/              # generate_golden, benchmark, make_readme_assets
 ├── data/golden/          # 20 clean + 3 perturbed synthetic cards + ground truth
 ├── docs/                 # benchmark.json + README images
-└── tests/                # 59 tests incl. security regressions
+└── tests/                # 60 tests incl. security regressions
 ```
 
 ## Credits
