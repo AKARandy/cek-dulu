@@ -156,12 +156,23 @@ def ocr_lines(image_path: str | Path) -> list[dict]:
             _PADDLE_LINES = PaddleOCR(use_angle_cls=True, lang="en", show_log=False)  # 2.x
 
     def _from_poly(text: str, conf: float, poly: Any) -> dict:
+        import math as _math
+
         xs = [p[0] for p in poly]
         ys = [p[1] for p in poly]
+        # The quad's top edge gives the line's own tilt: the physical card
+        # skew, measured per line, robust to two-column layout offsets.
+        angle = 0.0
+        if len(poly) >= 2:
+            dx = poly[1][0] - poly[0][0]
+            dy = poly[1][1] - poly[0][1]
+            if abs(dx) > 1e-3:
+                angle = _math.degrees(_math.atan2(dy, dx))
         return {
             "text": text,
             "bbox": [int(min(xs)), int(min(ys)), int(max(xs)), int(max(ys))],
             "conf": round(float(conf), 3),
+            "angle": round(angle, 2),
         }
 
     lines: list[dict] = []
@@ -179,90 +190,171 @@ def ocr_lines(image_path: str | Path) -> list[dict]:
     return lines
 
 
-def assign_fields(lines: list[dict]) -> dict[str, list[int]]:
-    """Map OCR lines to field keys via content rules + fixed-layout priors."""
+def assign_fields(lines: list[dict], *, shear: float = 0.0) -> dict[str, list[int]]:
+    """Map OCR lines to field keys.
+
+    Content first, geometry second: real cards and synthetic renders sit at
+    different absolute positions, but every Indonesian KTP prints the same
+    labels. Values live in their own column; labels pair to values by a
+    greedy one-to-one nearest-row match, which survives baseline offsets and
+    dense row spacing where a fixed tolerance collides across rows.
+    """
     boxes: dict[str, list[int]] = {}
-
-    # NIK: a 16-digit line high on the card.
-    for ln in lines:
-        if ln["bbox"][1] < NIK_MAX_Y and NIK_RE.search(ln["text"].replace(" ", "")):
-            boxes["nik"] = ln["bbox"]
-            break
-
-    # Gender: the line that IS a gender word.
-    for ln in lines:
-        up = ln["text"].upper()
-        if any(g in up for g in GENDER_WORDS):
-            boxes["jenis_kelamin"] = ln["bbox"]
-            break
-
-    # Remaining left-column rows: nearest y-line, one line per row.
     used: set[int] = set()
-    row_choice: dict[str, tuple[int, dict]] = {}
+
+    def norm_text(s: str) -> str:
+        return re.sub(r"[^A-Z0-9/]", "", s.upper())
+
+    def center_y(bbox: list[int]) -> float:
+        return (bbox[1] + bbox[3]) / 2
+
+    def level_y(ln: dict) -> float:
+        """Row center in shear-leveled coordinates.
+
+        On a tilted card the value column (larger x) sits systematically
+        lower than the label column; subtracting shear*x_mid flattens the
+        rows so label-value gaps become small and uniform.
+        """
+        return center_y(ln["bbox"]) - shear * (ln["bbox"][0] + ln["bbox"][2]) / 2
+
+    header_prefixes = ("PROVINSI", "KABUPATEN", "KOTA", "REPUBLIK", "INDONESIA")
+    label_to_key = {re.sub(r"[^A-Z0-9/]", "", v.upper()): k for k, v in ROW_LABELS.items()}
+    # Prefix anchors survive OCR mangling ("Tempatagahir", "Alamal", "RURW").
+    # Longest first so KECAMATAN wins over KEL/DESA-style prefixes.
+    anchor_to_key = sorted(
+        {
+            "NAMA": "nama",
+            "TEMPA": "ttl",
+            "JENIS": "jenis_kelamin",
+            "ALAMA": "alamat",
+            "RT/RW": "rt_rw",
+            "RTRW": "rt_rw",
+            "KEL/D": "kel_desa",
+            "KELDE": "kel_desa",
+            "KECAM": "kecamatan",
+            "AGAMA": "agama",
+            "STATU": "status_perkawinan",
+            "PEKER": "pekerjaan",
+            "KEWAR": "kewarganegaraan",
+            "BERLA": "berlaku_hingga",
+            "GOL": "gol_darah_label",
+        }.items(),
+        key=lambda kv: -len(kv[0]),
+    )
+
+    def classify(ln: dict) -> str:
+        n = norm_text(ln["text"])
+        if not n:
+            return "empty"
+        if any(n.startswith(h) for h in header_prefixes):
+            return "header"
+        for label in label_to_key:
+            if n == label or n.startswith(label):
+                return "label"
+        for anchor, _key in anchor_to_key:
+            if len(n) >= 4 and (n.startswith(anchor) or anchor.startswith(n) and len(n) >= 5):
+                return "label"
+        return "value"
+
+    # --- NIK: 16 digits anywhere; prefer the upper half ---
+    nik_cands = [ln for ln in lines if NIK_RE.search(ln["text"].replace(" ", ""))]
+    if nik_cands:
+        mid = sum(ln["bbox"][3] for ln in lines) / len(lines)
+        upper = [ln for ln in nik_cands if ln["bbox"][1] < mid] or nik_cands
+        upper.sort(key=lambda ln: ln["bbox"][1])
+        chosen = upper[0]
+        boxes["nik"] = chosen["bbox"]
+        used.add(lines.index(chosen))
+
+    # --- Classify every line ---
+    roles = [classify(ln) for ln in lines]
+
+    def anchor_key(text: str) -> str | None:
+        n = norm_text(text)
+        for label, key in sorted(label_to_key.items(), key=lambda L: -len(L)):
+            if n == label or n.startswith(label):
+                return key
+        for anchor, key in anchor_to_key:
+            if len(n) >= 4 and (n.startswith(anchor) or (anchor.startswith(n) and len(n) >= 5)):
+                return None if key == "gol_darah_label" else key
+        return None
+
+    label_line_of_key: dict[str, int] = {}
+    for i, (ln, role) in enumerate(zip(lines, roles, strict=False)):
+        if role != "label" or i in used:
+            continue
+        key = anchor_key(ln["text"])
+        if key and key not in boxes and key not in label_line_of_key:
+            label_line_of_key[key] = i
+            boxes[key] = ln["bbox"]  # provisional: the label row itself
+
+    # --- Greedy one-to-one pairing: labels to value-column lines by row ---
+    value_idx = [
+        i
+        for i, (ln, role) in enumerate(zip(lines, roles, strict=False))
+        if role == "value" and i not in used and 100 <= ln["bbox"][0] <= 430
+    ]
+    # Pair labels to values in shear-leveled coordinates: a value belongs to
+    # the label whose leveled row is nearest ABOVE it (small positive gap =
+    # the usual baseline offset). Greedy on smallest gap keeps it one-to-one.
+    claimed: set[str] = set()
+    assignments: list[tuple[float, str, int]] = []
+    for vi in value_idx:
+        vy = level_y(lines[vi])
+        best_gap, best_key = None, None
+        for key, li in label_line_of_key.items():
+            if key in claimed:
+                continue
+            gap = vy - level_y(lines[li])
+            if -3 <= gap <= 20 and (best_gap is None or gap < best_gap):
+                best_gap, best_key = gap, key
+        if best_key is not None:
+            assignments.append((best_gap, best_key, vi))
+    assignments.sort(key=lambda t: t[0])
+    for _gap, key, vi in assignments:
+        if key in claimed or vi in used:
+            continue
+        boxes[key] = lines[vi]["bbox"]
+        used.add(vi)
+        claimed.add(key)
+
+    # --- Gender: a line that IS a gender word ---
+    if "jenis_kelamin" not in boxes:
+        for i, ln in enumerate(lines):
+            if i not in used and any(g in ln["text"].upper() for g in GENDER_WORDS):
+                boxes["jenis_kelamin"] = ln["bbox"]
+                used.add(i)
+                break
+
+    # --- Fallback: synthetic-geometry priors for unclaimed fields ---
     for row_key, expected_y in LEFT_ROWS.items():
-        if row_key == "jenis_kelamin" and "jenis_kelamin" in boxes:
+        if row_key in boxes:
             continue
         best_i, best_d = None, ROW_TOLERANCE
         for i, ln in enumerate(lines):
-            if i in used:
+            if i in used or roles[i] != "value":
                 continue
-            cy = (ln["bbox"][1] + ln["bbox"][3]) / 2
-            d = abs(cy - expected_y)
+            d = abs(center_y(ln["bbox"]) - expected_y)
             if d < best_d and ln["bbox"][0] < RIGHT_MIN_X:
                 best_i, best_d = i, d
         if best_i is not None:
             used.add(best_i)
-            row_choice[row_key] = (best_i, lines[best_i])
+            boxes[row_key] = lines[best_i]["bbox"]
 
-    # Label/value pairing: Paddle often reads "NAMA:" and the value as two
-    # lines on the same row. If the chosen line is just the label, adopt the
-    # nearest right-neighbor line on that row as the field's text.
-    for row_key, (i, ln) in row_choice.items():
-        chosen = ln
-        text_norm = ln["text"].upper().replace(":", "").strip()
-        label = ROW_LABELS.get(row_key)
-        if label and (text_norm == label or text_norm.endswith(label)):
-            cy = (ln["bbox"][1] + ln["bbox"][3]) / 2
-            partner, partner_dx = None, 1e9
-            for j, other in enumerate(lines):
-                if j == i or j in used:
-                    continue
-                ocy = (other["bbox"][1] + other["bbox"][3]) / 2
-                if (
-                    abs(ocy - cy) <= 9
-                    and other["bbox"][0] > ln["bbox"][2] - 5
-                    and other["bbox"][2] < RIGHT_MIN_X
-                ):
-                    dx = other["bbox"][0] - ln["bbox"][2]
-                    if 0 <= dx < partner_dx:
-                        partner, partner_dx = other, dx
-            if partner is not None:
-                used.add(lines.index(partner))
-                chosen = partner
-        boxes[row_key] = chosen["bbox"]
-
-    # Gol. darah: a tiny value riding to the right of the Jenis Kelamin row.
-    if "jenis_kelamin" in boxes and any(k in boxes for k in ("nama",)):
-        jk_box = boxes["jenis_kelamin"]
-        cy = (jk_box[1] + jk_box[3]) / 2
-        partner, partner_dx = None, 1e9
-        for j, other in enumerate(lines):
-            if other["bbox"] is jk_box or j in used:
+    # --- Gol. darah: tiny value right of the Jenis Kelamin row ---
+    if "jenis_kelamin" in boxes:
+        jk_y = center_y(boxes["jenis_kelamin"])
+        best, best_dx = None, 1e9
+        for i, ln in enumerate(lines):
+            if i in used:
                 continue
-            ocy = (other["bbox"][1] + other["bbox"][3]) / 2
-            if (
-                abs(ocy - cy) <= 9
-                and other["bbox"][0] > jk_box[2] - 5
-                and other["bbox"][2] < RIGHT_MIN_X
-            ):
-                dx = other["bbox"][0] - jk_box[2]
-                if 0 <= dx < partner_dx and len(other["text"]) <= 4:
-                    partner, partner_dx = other, dx
-        if partner is not None:
-            boxes["gol_darah"] = partner["bbox"]
+            if abs(center_y(ln["bbox"]) - jk_y) <= 14 and len(ln["text"].strip()) <= 4:
+                dx = ln["bbox"][0] - boxes["jenis_kelamin"][2]
+                if 0 <= dx < best_dx:
+                    best, best_dx = ln, dx
+        if best is not None:
+            boxes["gol_darah"] = best["bbox"]
 
-    # Values sometimes ride in the same line as labels ("Nama: BUDI"); the
-    # bbox still localizes the row, which is what downstream cropping needs.
     return boxes
 
 

@@ -62,14 +62,23 @@ def glare_fraction(img: Image.Image) -> float:
     return float((arr > 250).mean())
 
 
+def text_region(img: Image.Image) -> Image.Image:
+    """Crop the left-column text block: skew estimation lives here.
+
+    Full-card estimation is fooled by guilloche waves and the photo box;
+    the label/value column is the signal.
+    """
+    w, h = img.size
+    return img.crop((0, int(h * 0.12), int(w * 0.62), int(h * 0.95)))
+
+
 def estimate_skew(img: Image.Image, *, max_angle: float = 10.0, step: float = 0.5) -> float:
     """Estimate rotation via projection-profile variance.
 
     Text rows create strong horizontal structure: at the correct angle the
     row-sum variance of the edge map peaks. Search -max..+max degrees.
     """
-    edges = img.convert("L").filter(ImageFilter.FIND_EDGES)
-    base = edges.rotate(0)
+    edges = text_region(img).convert("L").filter(ImageFilter.FIND_EDGES)
     best_angle, best_var = 0.0, -1.0
     angles = np.arange(-max_angle, max_angle + step / 2, step)
     for a in angles:
@@ -77,7 +86,6 @@ def estimate_skew(img: Image.Image, *, max_angle: float = 10.0, step: float = 0.
         var = float(np.var(np.asarray(rotated, dtype=np.float32).sum(axis=1)))
         if var > best_var:
             best_var, best_angle = var, float(a)
-    del base
     return best_angle
 
 

@@ -120,6 +120,10 @@ class TestOverlappingRequests:
         barrier = threading.Barrier(2, timeout=30)
 
         def fake_lines(p):
+            # Only the saved upload carries card content; ignore the extra
+            # files later pipeline stages OCR (nik strip, deskewed copy).
+            if Path(p).name != "upload.png":
+                return []
             # Identify the card by the upload's own bytes, not call order:
             # each request must get ITS input's lines even mid-flight together.
             digest = hashlib.sha256(Path(p).read_bytes()).hexdigest()
@@ -143,6 +147,21 @@ class TestOverlappingRequests:
                 line("jenis_kelamin", spec["jenis_kelamin"]),
             ]
 
+        import types as _types
+
+        monkeypatch.setattr(
+            "app.preprocess.preprocess",
+            lambda p, o: (
+                Path(p),
+                _types.SimpleNamespace(
+                    as_dict=lambda: {
+                        "method": "test_passthrough",
+                        "rotated_by": 0.0,
+                        "photometric": False,
+                    }
+                ),
+            ),
+        )
         monkeypatch.setattr("app.detect.ocr_lines", fake_lines)
         monkeypatch.setattr(
             "app.detect.ground_photo_box", lambda p: ([610, 100, 810, 350], "layout_prior")

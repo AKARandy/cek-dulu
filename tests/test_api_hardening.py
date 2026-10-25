@@ -37,7 +37,15 @@ def _mock_ocr(monkeypatch, lines_by_path: dict | None = None, lines: list | None
             lambda p: lines_by_path[Path(p).name],
         )
     else:
-        monkeypatch.setattr("app.detect.ocr_lines", lambda p: lines or [])
+        import types as _types
+
+    def _identity_preprocess(path, out):
+        return Path(path), _types.SimpleNamespace(
+            as_dict=lambda: {"method": "test_passthrough", "rotated_by": 0.0, "photometric": False}
+        )
+
+    monkeypatch.setattr("app.preprocess.preprocess", _identity_preprocess)
+    monkeypatch.setattr("app.detect.ocr_lines", lambda p: lines or [])
     monkeypatch.setattr(
         "app.detect.ground_photo_box", lambda p: ([610, 100, 810, 350], "layout_prior")
     )
@@ -77,6 +85,10 @@ class TestRequestIsolation:
         calls = {"n": 0}
 
         def fake_lines(p):
+            # Only the saved upload carries card content; ignore the extra
+            # files later pipeline stages OCR (nik strip, deskewed copy).
+            if Path(p).name != "upload.png":
+                return []
             # Uploads get server-controlled names, so identify the card by
             # call order: first upload -> card 0, second -> card 1.
             entry = clean[calls["n"] % 2]
