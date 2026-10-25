@@ -33,12 +33,27 @@ def parse_ttl_date(text: str) -> date | None:
         return None
 
 
+# Indonesian place names are alphabetic; OCR swaps letters for lookalike
+# digits (B->8, O->0, I->1, S->5, G->6). Only applied to the place segment.
+_OCR_DIGIT_MAP = str.maketrans({"8": "B", "0": "O", "1": "I", "5": "S", "6": "G"})
+
+
+def fix_place_glyphs(place: str) -> str:
+    """Map OCR digit/letter confusions inside alphabetic place tokens."""
+    fixed = []
+    for tok in place.split():
+        if any(c.isalpha() for c in tok) and any(c.isdigit() for c in tok):
+            tok = tok.translate(_OCR_DIGIT_MAP)
+        fixed.append(tok)
+    return " ".join(fixed)
+
+
 def parse_ttl_place(text: str) -> str | None:
     m = DATE_RE.search(text)
     if not m:
         return normalize(text) or None
     place = text[: m.start()].strip().rstrip(",.").strip()
-    return normalize(place) or None
+    return fix_place_glyphs(normalize(place)) or None
 
 
 GENDER_MAP = {

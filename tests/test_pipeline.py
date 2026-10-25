@@ -24,6 +24,11 @@ class TestParsing:
         assert parse_ttl_date("JAKARTA SELATAN 13.11.1990") == date(1990, 11, 13)
         assert parse_ttl_date("no date here") is None
 
+    def test_ttl_place_ocr_digit_fix(self):
+        # B misread as 8 inside an alphabetic place name
+        assert parse_ttl_place("LE8AK, 10-09-1976") == "LEBAK"
+        assert parse_ttl_place("BEKASI, 17-07-1985") == "BEKASI"  # pure letters untouched
+
     def test_nik_cleaning(self):
         assert clean_nik("3216 0517 0785 0123") == "3216051707850123"
         assert clean_nik("NIK: 3216051707850123 X") == "3216051707850123"

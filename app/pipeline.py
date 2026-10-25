@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any
 
 from app.ocr import StubOcr
-from app.parse_fields import clean_nik, normalize, normalize_gender, parse_ttl_date
+from app.parse_fields import clean_nik, normalize, normalize_gender, parse_ttl_date, parse_ttl_place
 from app.qa import check_document
 
 SPEC_KEY_TO_TEXT: dict[str, Any] = {}  # populated by _spec_text()
@@ -277,6 +277,14 @@ def run(
 
     for key, v in fields.items():
         v["text"] = strip_label(v.get("text", ""), key).lstrip(" :")
+
+    # TTL display: rebuild as 'PLACE, DD-MM-YYYY' with OCR digit fixes in the
+    # place part (LE8AK -> LEBAK); the date itself parses as-is.
+    _ttl = fields.get("ttl", {}).get("text", "")
+    _place = parse_ttl_place(_ttl)
+    _d = parse_ttl_date(_ttl)
+    if _place and _d:
+        fields["ttl"]["text"] = f"{_place}, {_d:%d-%m-%Y}"
 
     nik_raw = fields.get("nik", {}).get("text", "")
     nik = clean_nik(nik_raw)
