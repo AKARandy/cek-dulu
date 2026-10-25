@@ -16,7 +16,7 @@ pillow>=10.3
 
 torch>=2.2
 transformers==4.49.0     # Florence-2 remote code breaks on >=4.50
-huggingface-hub<1.0      # transformers 4.49 rejects hub>=1.0 (gradio pulls 2.x without this pin)
+huggingface-hub==0.36.0  # transformers 4.49 rejects hub>=1.0; gradio 6 needs hub>=1.16 -> use gradio 5
 einops
 timm
 
@@ -24,4 +24,4 @@ paddlepaddle==2.6.2      # 3.x has a oneDNN CPU bug; 2.7.3 paddleocr pairs with 
 paddleocr==2.7.3
 
 onnxruntime>=1.17
-gradio>=4.44
+gradio==5.50.0           # 6.x requires huggingface-hub>=1.16, incompatible with transformers 4.49

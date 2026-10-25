@@ -121,8 +121,8 @@ pip install -r requirements.txt
 pip install torch --index-url https://download.pytorch.org/whl/cpu   # CPU wheel
 pip install -r requirements-dev.txt
 
-python scripts/generate_golden.py          # synthetic golden set (committed anyway)
-pytest                                     # 53 tests, no weights needed
+python scripts/generate_golden.py          # synthetic golden set (PNGs are generated; only ground truth is tracked)
+pytest                                     # 59 tests, no weights needed
 uvicorn app.api:app --port 8765            # API + Swagger at /docs
 python demo/app.py                         # Gradio demo at :7860
 python scripts/benchmark.py                # reproduce the table above
@@ -172,7 +172,7 @@ Uploads are size-capped (10 MB), decode-verified, and stored under server-contro
 
 ## Testing and CI
 
-- 53 tests: validators (structure, cross-field, impossible dates, placeholder caveat), generator invariants, QA gates, parsing, API hardening (path traversal, request isolation, upload limits, structured missing-NIK).
+- 59 tests: validators (structure, cross-field, impossible dates, placeholder caveat), generator invariants, QA gates, parsing, API hardening (path traversal, request isolation, upload limits, structured missing-NIK), redaction cleanup paths, barrier-synchronized request isolation, and Gradio wiring arity.
 - Model-dependent tests are marker-gated (`pytest -m models`) and excluded from CI; CI runs ruff + unit tests + docker build.
 - The security regression suite came out of an independent audit; every finding has a named test.
 
@@ -194,7 +194,7 @@ cek-dulu/
 ├── scripts/              # generate_golden, benchmark, make_readme_assets
 ├── data/golden/          # 20 clean + 3 perturbed synthetic cards + ground truth
 ├── docs/                 # benchmark.json + README images
-└── tests/                # 53 tests incl. security regressions
+└── tests/                # 59 tests incl. security regressions
 ```
 
 ## Credits

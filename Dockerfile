@@ -6,9 +6,9 @@ ENV PYTHONUNBUFFERED=1 \
 
 WORKDIR /srv
 
-# System deps: minimal; Pillow and paddle wheels are self-contained
+# System deps: libgomp for paddle, dejavu fonts for the synthetic generator
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends libgomp1 \
+    && apt-get install -y --no-install-recommends libgomp1 fonts-dejavu-core \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
@@ -18,8 +18,11 @@ RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/wh
 COPY app ./app
 COPY validators ./validators
 COPY demo ./demo
-COPY data/golden ./data/golden
 COPY scripts ./scripts
+
+# Golden PNGs are generated, not tracked: produce them inside the image
+RUN python scripts/generate_golden.py
+COPY data/golden/ground_truth.json ./data/golden/ground_truth.json
 
 # Bake the weights so the container runs fully offline
 ENV CEKDULU_MODEL_DIR=/srv/models
