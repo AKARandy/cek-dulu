@@ -60,8 +60,9 @@ def _draw_boxes(image_path: str, boxes: dict) -> Image.Image:
         # Label chip inside the box, top-left: never collides with the row above.
         label = FIELD_LABELS.get(key, key)
         tw = d.textlength(label, font=font) if font else len(label) * 7
-        d.rectangle([x0 + 1, y0 + 1, x0 + tw + 10, y0 + 19], fill=(220, 40, 40))
-        d.text((x0 + 5, y0 + 3), label, fill=(255, 255, 255), font=font)
+        cx = max(x0 + 1, x1 - tw - 8)  # top-right: values are left-aligned
+        d.rectangle([cx, y0 + 1, cx + tw + 6, y0 + 19], fill=(220, 40, 40))
+        d.text((cx + 3, y0 + 3), label, fill=(255, 255, 255), font=font)
     return img
 
 
@@ -99,7 +100,7 @@ def analyze(image, redact_values: bool):
     out_img = annotated
     if redact_values:
         out_img = Image.open(
-            redact(image, result["boxes"], out_path=DEMO_WORK / "demo_redacted.png")
+            redact(display, result["boxes"], out_path=DEMO_WORK / "demo_redacted.png")
         )
     return out_img, "\n".join(lines)
 

@@ -197,8 +197,14 @@ def run(
         _angles = [ln.get("angle", 0.0) for ln in lines if abs(ln.get("angle", 0.0)) < 15]
         _tilt = _stats.median(_angles) if _angles else 0.0
         _shear = _math.tan(_math.radians(_tilt))
+        from app.detect import photo_box_from_lines
+
         boxes = assign_fields(lines, shear=_shear)
         photo, photo_source = ground_photo_box(image_path)
+        if photo_source == "layout_prior":
+            adaptive = photo_box_from_lines(lines)
+            if adaptive:
+                photo, photo_source = adaptive, "text_density"
         boxes["foto"] = photo
         fields = {}
         for key, bbox in boxes.items():
@@ -296,6 +302,9 @@ def run(
     result["authenticity"] = notes
 
     result["boxes"] = boxes
+    # Boxes live in the coordinate space of the image actually OCR'd
+    # (preprocessed + deskewed); overlays must render on THIS image.
+    result["processed_image"] = str(image_path)
     # Which backend produced the photo box on the model path; None on gold mode.
     result["photo_box_source"] = locals().get("photo_source")
     return result

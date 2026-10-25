@@ -87,6 +87,34 @@ def load_model(model_id: str = "microsoft/Florence-2-base") -> None:
     _MODEL.eval()
 
 
+def photo_box_from_lines(lines: list[dict]) -> list[int] | None:
+    """Photo box from OCR text density: the largest right-side band with no
+    text, between the header and the bottom strip. Adapts to any card that
+    fills the frame differently than the fixed layout prior expects."""
+    if not lines:
+        return None
+    ys = list(range(70, 470, 5))
+    free = []
+    for y in ys:
+        blocked = any(
+            ln["bbox"][2] > 560 and ln["bbox"][1] <= y <= ln["bbox"][3] for ln in lines
+        )
+        free.append(0 if blocked else 1)
+    best_len, best_start, run = 0, 0, 0
+    for i, f in enumerate(free):
+        if f:
+            run += 1
+            if run > best_len:
+                best_len, best_start = run, i - run + 1
+        else:
+            run = 0
+    if best_len < 30:  # < 150px of contiguous free band: not confident
+        return None
+    y0 = ys[best_start] - 10
+    y1 = ys[min(len(ys) - 1, best_start + best_len)] + 10
+    return [585, max(70, y0), 835, min(500, y1)]
+
+
 def ground_photo_box(image_path: str | Path) -> tuple[list[int], str]:
     """Photo box with provenance: (box, "florence" | "layout_prior").
 
@@ -317,6 +345,23 @@ def assign_fields(lines: list[dict], *, shear: float = 0.0) -> dict[str, list[in
         boxes[key] = lines[vi]["bbox"]
         used.add(vi)
         claimed.add(key)
+
+    # --- Row-band boxes for label-only fields (no value paired) ---
+    # An unpaired field otherwise displays its far-left LABEL box; span the
+    # whole row instead so overlays and redaction cover the likely value.
+    if value_idx:
+        heights = [
+            lines[i]["bbox"][3] - lines[i]["bbox"][1] for i in value_idx
+        ]
+        heights.sort()
+        band_h = heights[len(heights) // 2] + 8
+    else:
+        band_h = 22
+    for key, li in label_line_of_key.items():
+        if key in claimed:
+            continue
+        lab = lines[li]["bbox"]
+        boxes[key] = [lab[0], lab[1], 560, min(539, lab[1] + band_h)]
 
     # --- Gender: a line that IS a gender word ---
     if "jenis_kelamin" not in boxes:
