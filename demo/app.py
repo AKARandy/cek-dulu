@@ -42,22 +42,34 @@ FIELD_LABELS = {
 
 
 def _draw_boxes(image_path: str, boxes: dict) -> Image.Image:
+    from PIL import ImageFont
+
     img = Image.open(image_path).convert("RGB")
     d = ImageDraw.Draw(img)
+    font = None
+    for cand in ("C:/Windows/Fonts/arialbd.ttf", "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"):
+        if Path(cand).exists():
+            font = ImageFont.truetype(cand, 13)
+            break
     for key, (x0, y0, x1, y1) in boxes.items():
         d.rectangle([x0, y0, x1, y1], outline=(220, 40, 40), width=2)
-        d.text((x0, max(0, y0 - 12)), FIELD_LABELS.get(key, key), fill=(220, 40, 40))
+        # Label chip inside the box, top-left: never collides with the row above.
+        label = FIELD_LABELS.get(key, key)
+        tw = d.textlength(label, font=font) if font else len(label) * 7
+        d.rectangle([x0 + 1, y0 + 1, x0 + tw + 10, y0 + 19], fill=(220, 40, 40))
+        d.text((x0 + 5, y0 + 3), label, fill=(255, 255, 255), font=font)
     return img
 
 
 def analyze(image, redact_values: bool):
+    """Returns exactly two values, matching the btn.click output binding."""
     if image is None:
-        return None, "Upload a KTP image (or generate one - synthetic only!).", None
+        return None, "Upload a KTP image (or generate one - synthetic only!)."
     DEMO_WORK.mkdir(parents=True, exist_ok=True)
     result = pipeline.run(image, workdir=DEMO_WORK)
     if result.get("rejected"):
         reasons = "\n".join(f"- {r}" for r in result["qa"]["reasons"])
-        return None, f"**Rejected by document QA**\n\n{reasons}", None
+        return None, f"**Rejected by document QA**\n\n{reasons}"
 
     annotated = _draw_boxes(image, result["boxes"])
 
@@ -85,7 +97,7 @@ def analyze(image, redact_values: bool):
         out_img = Image.open(
             redact(image, result["boxes"], out_path=DEMO_WORK / "demo_redacted.png")
         )
-    return out_img, "\n".join(lines), result
+    return out_img, "\n".join(lines)
 
 
 def face_tab(a, b, threshold: float):

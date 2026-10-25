@@ -87,16 +87,20 @@ def load_model(model_id: str = "microsoft/Florence-2-base") -> None:
     _MODEL.eval()
 
 
-def ground_photo_box(image_path: str | Path) -> list[int] | None:
-    """Photo box via Florence-2 grounding; layout-prior fallback on any failure."""
+def ground_photo_box(image_path: str | Path) -> tuple[list[int], str]:
+    """Photo box with provenance: (box, "florence" | "layout_prior").
+
+    Grounding is an enhancement; the card layout guarantees the position, so
+    any grounding failure falls back to the layout prior, and the caller
+    records which one actually produced the box.
+    """
     try:
         grounded = _florence_photo(image_path)
         if grounded is not None:
-            return grounded
+            return grounded, "florence"
     except Exception:
-        pass  # grounding is an enhancement; the card layout guarantees the position
-    # Fixed national layout prior: photo sits top-right of the card body.
-    return [610, 100, 810, 350]
+        pass
+    return [610, 100, 810, 350], "layout_prior"
 
 
 def _florence_photo(image_path: str | Path) -> list[int] | None:

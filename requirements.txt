@@ -16,6 +16,7 @@ pillow>=10.3
 
 torch>=2.2
 transformers==4.49.0     # Florence-2 remote code breaks on >=4.50
+huggingface-hub<1.0      # transformers 4.49 rejects hub>=1.0 (gradio pulls 2.x without this pin)
 einops
 timm
 

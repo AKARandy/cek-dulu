@@ -74,9 +74,8 @@ def run(
         lines = ocr_lines(image_path)
         by_bbox = {tuple(ln["bbox"]): ln for ln in lines}
         boxes = assign_fields(lines)
-        photo = ground_photo_box(image_path)
-        if photo:
-            boxes["foto"] = photo
+        photo, photo_source = ground_photo_box(image_path)
+        boxes["foto"] = photo
         fields = {}
         for key, bbox in boxes.items():
             ln = by_bbox.get(tuple(bbox))
@@ -146,4 +145,6 @@ def run(
         "issues": check.issues,
     }
     result["boxes"] = boxes
+    # Which backend produced the photo box on the model path; None on gold mode.
+    result["photo_box_source"] = locals().get("photo_source")
     return result

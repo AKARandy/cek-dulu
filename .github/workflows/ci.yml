@@ -14,12 +14,14 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
-      - run: pip install ruff pytest httpx pillow numpy
+      # Complete lightweight test set: every import the weight-free suite
+      # touches, proven by scripts/prove_ci_deps.sh locally. No model deps
+      # (torch/paddle/transformers) and no weights are needed for unit tests.
+      - run: >
+          pip install ruff pytest httpx fastapi python-multipart pillow numpy gradio
       - run: ruff check .
       - run: python scripts/generate_golden.py
       - run: pytest -q
-      - name: unit tests cover the weight-free surface
-        run: pytest -q -m "not models" --tb=short
 
   docker:
     runs-on: ubuntu-latest

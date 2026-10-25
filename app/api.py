@@ -71,22 +71,26 @@ def _golden(index: int) -> tuple[dict, KtpSpec, Path]:
 def _save_upload(upload: UploadFile, tmpdir: Path, name: str = "upload.png") -> Path:
     """Store an upload under a server-controlled path, size-capped and verified.
 
-    The client filename is deliberately never used as (part of) a path.
+    Decoding is verified in memory BEFORE anything touches the disk, so an
+    invalid upload leaves no file behind. The client filename is deliberately
+    never used as (part of) a path.
     """
     data = upload.file.read(MAX_UPLOAD_BYTES + 1)
     if len(data) > MAX_UPLOAD_BYTES:
         raise HTTPException(422, "upload exceeds 10 MB limit")
     if not data:
         raise HTTPException(422, "upload is empty")
-    dest = tmpdir / name
-    dest.write_bytes(data)
     try:
+        import io
+
         from PIL import Image
 
-        with Image.open(dest) as im:
+        with Image.open(io.BytesIO(data)) as im:
             im.verify()
     except Exception as exc:  # noqa: BLE001 - any decode failure is a 422
         raise HTTPException(422, f"upload is not a decodable image: {exc}") from exc
+    dest = tmpdir / name
+    dest.write_bytes(data)
     return dest
 
 
@@ -133,8 +137,12 @@ def redact_image(
         entry, _, img = _golden(index)
         boxes = entry.get("bboxes") or {}
         req = _new_request_dir()
-        out = redact(img, boxes, fields=wanted, out_path=req / "redacted.png")
-        skipped = [f for f in wanted if f not in boxes]
+        try:
+            out = redact(img, boxes, fields=wanted, out_path=req / "redacted.png")
+            skipped = [f for f in wanted if f not in boxes]
+        except Exception:
+            shutil.rmtree(req, ignore_errors=True)
+            raise
         return FileResponse(
             out,
             media_type="image/png",
@@ -145,13 +153,16 @@ def redact_image(
     if image is None:
         raise HTTPException(422, "mode=model requires an image upload")
     req = _new_request_dir()
-    dest = _save_upload(image, req)
-    result = pipeline.run(dest, workdir=req / "work")
-    if result.get("rejected"):
+    try:
+        dest = _save_upload(image, req)
+        result = pipeline.run(dest, workdir=req / "work")
+        if result.get("rejected"):
+            raise HTTPException(422, f"image rejected by QA: {result['qa']['reasons']}")
+        skipped = [f for f in wanted if f not in (result.get("boxes") or {})]
+        out = redact(dest, result["boxes"], fields=wanted, out_path=req / "redacted.png")
+    except Exception:
         shutil.rmtree(req, ignore_errors=True)
-        raise HTTPException(422, f"image rejected by QA: {result['qa']['reasons']}")
-    skipped = [f for f in wanted if f not in (result.get("boxes") or {})]
-    out = redact(dest, result["boxes"], fields=wanted, out_path=req / "redacted.png")
+        raise
     return FileResponse(
         out,
         media_type="image/png",

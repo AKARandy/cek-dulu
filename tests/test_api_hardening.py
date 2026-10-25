@@ -38,7 +38,9 @@ def _mock_ocr(monkeypatch, lines_by_path: dict | None = None, lines: list | None
         )
     else:
         monkeypatch.setattr("app.detect.ocr_lines", lambda p: lines or [])
-    monkeypatch.setattr("app.detect.ground_photo_box", lambda p: [610, 100, 810, 350])
+    monkeypatch.setattr(
+        "app.detect.ground_photo_box", lambda p: ([610, 100, 810, 350], "layout_prior")
+    )
 
 
 class TestPathTraversal:
@@ -147,7 +149,9 @@ class TestRedactRobustness:
             ]
 
         monkeypatch.setattr("app.detect.ocr_lines", fake_lines)
-        monkeypatch.setattr("app.detect.ground_photo_box", lambda p: [610, 100, 810, 350])
+        monkeypatch.setattr(
+            "app.detect.ground_photo_box", lambda p: ([610, 100, 810, 350], "layout_prior")
+        )
         r = client.post(
             "/redact?mode=model&fields=nik,foto",
             files={"image": ("card.png", _golden_bytes(0), "image/png")},

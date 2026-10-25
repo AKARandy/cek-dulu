@@ -71,6 +71,7 @@ def main(limit: int | None = None) -> None:
     dists = {k: [] for k in TEXT_KEYS}
     timings = []
     validations_ok = 0
+    photo_sources: list[str] = []
     rows = []
 
     for entry in clean:
@@ -80,11 +81,13 @@ def main(limit: int | None = None) -> None:
         dt = time.time() - t0
         timings.append(dt)
         validations_ok += bool(result["validation"]["ok"])
+        photo_sources.append(result.get("photo_box_source") or "gold")
         truth = spec_truth(entry["spec"])
         row = {
             "image": entry["image"],
             "seconds": round(dt, 2),
             "validation_ok": result["validation"]["ok"],
+            "photo_box_source": result.get("photo_box_source"),
             "fields": {},
         }
         for key, want in truth.items():
@@ -106,9 +109,10 @@ def main(limit: int | None = None) -> None:
 
     summary = {
         "ran_at": datetime.now(UTC).isoformat(),
-        "mode": "real models (PaddleOCR 2.7.3 + Florence-2-base), CPU",
+        "mode": "real models (PaddleOCR 2.7.3), CPU; photo box provenance recorded per card",
         "cards": len(clean),
         "validation_pass_rate": round(validations_ok / len(clean), 3),
+        "photo_box_provenance": {s: photo_sources.count(s) for s in sorted(set(photo_sources))},
         "seconds_per_card": {
             "mean": round(sum(timings) / len(timings), 2),
             "min": round(min(timings), 2),
@@ -139,6 +143,7 @@ def main(limit: int | None = None) -> None:
         print(f"| {k} | {fa['exact']} | {fa['of']} | {fa['exact_rate']} | {dist} |")
     spc = summary["seconds_per_card"]
     print(f"\nvalidation pass: {summary['validation_pass_rate']}, mean {spc['mean']}s/card")
+    print(f"photo box provenance: {summary['photo_box_provenance']}")
     print(f"raw: {OUT}")
 
 
