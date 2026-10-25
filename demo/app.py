@@ -47,7 +47,11 @@ def _draw_boxes(image_path: str, boxes: dict) -> Image.Image:
     img = Image.open(image_path).convert("RGB")
     d = ImageDraw.Draw(img)
     font = None
-    for cand in ("C:/Windows/Fonts/arialbd.ttf", "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"):
+    fonts = (
+        "C:/Windows/Fonts/arialbd.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+    )
+    for cand in fonts:
         if Path(cand).exists():
             font = ImageFont.truetype(cand, 13)
             break

@@ -22,7 +22,10 @@ def run(cmd: list[str], **kw) -> None:
 def main() -> None:
     venv_dir = ROOT / ".venv_ciproof"
     venv.create(venv_dir, with_pip=True)
-    py = str(venv_dir / "Scripts" / "python.exe" if sys.platform == "win32" else venv_dir / "bin" / "python")
+    if sys.platform == "win32":
+        py = str(venv_dir / "Scripts" / "python.exe")
+    else:
+        py = str(venv_dir / "bin" / "python")
 
     run([py, "-m", "pip", "install", "--quiet", "--upgrade", "pip"])
     run([py, "-m", "pip", "install", "--quiet", *CI_DEPS])

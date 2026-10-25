@@ -172,7 +172,13 @@ class TestGradioWiring:
         canned = {
             "rejected": False,
             "boxes": {},
-            "validation": {"ok": True, "province": "TEST", "birth_date": None, "gender": None, "issues": []},
+            "validation": {
+                "ok": True,
+                "province": "TEST",
+                "birth_date": None,
+                "gender": None,
+                "issues": [],
+            },
             "extracted": {},
         }
         monkeypatch.setattr(d.pipeline, "run", lambda *a, **k: dict(canned))
