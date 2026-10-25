@@ -1,0 +1,1553 @@
+{
+ "ran_at": "2026-10-25T04:27:28.859111+00:00",
+ "mode": "real models (PaddleOCR 2.7.3 + Florence-2-base), CPU",
+ "cards": 20,
+ "validation_pass_rate": 1.0,
+ "seconds_per_card": {
+  "mean": 10.49,
+  "min": 8.82,
+  "max": 27.21
+ },
+ "qa_rejection_on_perturbed": {
+  "blur": {
+   "rejected": true,
+   "reasons": [
+    "sharpness failed: value=15.491 threshold=25.0 std of edges"
+   ]
+  },
+  "glare": {
+   "rejected": true,
+   "reasons": [
+    "glare failed: value=0.084 threshold=0.05 near-white fraction"
+   ]
+  },
+  "skew": {
+   "rejected": true,
+   "reasons": [
+    "skew failed: value=-7.000 threshold=4.0 degrees (abs)"
+   ]
+  }
+ },
+ "field_accuracy": {
+  "nik": {
+   "exact": 20,
+   "of": 20,
+   "exact_rate": 1.0,
+   "mean_normalized_distance": 0.0
+  },
+  "nama": {
+   "exact": 19,
+   "of": 20,
+   "exact_rate": 0.95,
+   "mean_normalized_distance": 0.004
+  },
+  "ttl": {
+   "exact": 19,
+   "of": 20,
+   "exact_rate": 0.95,
+   "mean_normalized_distance": 0.002
+  },
+  "jenis_kelamin": {
+   "exact": 20,
+   "of": 20,
+   "exact_rate": 1.0,
+   "mean_normalized_distance": 0.0
+  },
+  "gol_darah": {
+   "exact": 0,
+   "of": 20,
+   "exact_rate": 0.0,
+   "mean_normalized_distance": 1.0
+  },
+  "alamat": {
+   "exact": 20,
+   "of": 20,
+   "exact_rate": 1.0,
+   "mean_normalized_distance": 0.0
+  },
+  "rt_rw": {
+   "exact": 20,
+   "of": 20,
+   "exact_rate": 1.0,
+   "mean_normalized_distance": 0.0
+  },
+  "kel_desa": {
+   "exact": 20,
+   "of": 20,
+   "exact_rate": 1.0,
+   "mean_normalized_distance": 0.0
+  },
+  "kecamatan": {
+   "exact": 20,
+   "of": 20,
+   "exact_rate": 1.0,
+   "mean_normalized_distance": 0.0
+  },
+  "agama": {
+   "exact": 20,
+   "of": 20,
+   "exact_rate": 1.0,
+   "mean_normalized_distance": 0.0
+  },
+  "status_perkawinan": {
+   "exact": 20,
+   "of": 20,
+   "exact_rate": 1.0,
+   "mean_normalized_distance": 0.0
+  },
+  "pekerjaan": {
+   "exact": 20,
+   "of": 20,
+   "exact_rate": 1.0,
+   "mean_normalized_distance": 0.0
+  },
+  "kewarganegaraan": {
+   "exact": 14,
+   "of": 20,
+   "exact_rate": 0.7,
+   "mean_normalized_distance": 0.075
+  }
+ },
+ "rows": [
+  {
+   "image": "ktp_000.png",
+   "seconds": 27.21,
+   "validation_ok": true,
+   "fields": {
+    "nik": {
+     "got": "3102125311900465",
+     "want": "3102125311900465",
+     "distance": 0.0
+    },
+    "nama": {
+     "got": "AYU SETIAWAN",
+     "want": "AYU SETIAWAN",
+     "distance": 0.0
+    },
+    "ttl": {
+     "got": "JAKARTA SELATAN, 13-11-1990",
+     "want": "JAKARTA SELATAN, 13-11-1990",
+     "distance": 0.0
+    },
+    "jenis_kelamin": {
+     "got": "PEREMPUAN",
+     "want": "PEREMPUAN",
+     "distance": 0.0
+    },
+    "gol_darah": {
+     "got": "",
+     "want": "B",
+     "distance": 1.0
+    },
+    "alamat": {
+     "got": "JL. DIPONEGORO NO 98",
+     "want": "JL. DIPONEGORO NO 98",
+     "distance": 0.0
+    },
+    "rt_rw": {
+     "got": "013/001",
+     "want": "013/001",
+     "distance": 0.0
+    },
+    "kel_desa": {
+     "got": "KALIBARU",
+     "want": "KALIBARU",
+     "distance": 0.0
+    },
+    "kecamatan": {
+     "got": "TEBET",
+     "want": "TEBET",
+     "distance": 0.0
+    },
+    "agama": {
+     "got": "KATOLIK",
+     "want": "KATOLIK",
+     "distance": 0.0
+    },
+    "status_perkawinan": {
+     "got": "MENIKAH",
+     "want": "MENIKAH",
+     "distance": 0.0
+    },
+    "pekerjaan": {
+     "got": "PROGRAMMER",
+     "want": "PROGRAMMER",
+     "distance": 0.0
+    },
+    "kewarganegaraan": {
+     "got": "WNI",
+     "want": "WNI",
+     "distance": 0.0
+    }
+   }
+  },
+  {
+   "image": "ktp_001.png",
+   "seconds": 8.93,
+   "validation_ok": true,
+   "fields": {
+    "nik": {
+     "got": "3278124710832595",
+     "want": "3278124710832595",
+     "distance": 0.0
+    },
+    "nama": {
+     "got": "RATNA MAHENDRA",
+     "want": "RATNA MAHENDRA",
+     "distance": 0.0
+    },
+    "ttl": {
+     "got": "BEKASI, 07-10-1983",
+     "want": "BEKASI, 07-10-1983",
+     "distance": 0.0
+    },
+    "jenis_kelamin": {
+     "got": "PEREMPUAN",
+     "want": "PEREMPUAN",
+     "distance": 0.0
+    },
+    "gol_darah": {
+     "got": "",
+     "want": "-",
+     "distance": 1.0
+    },
+    "alamat": {
+     "got": "JL. DIPONEGORO NO 48",
+     "want": "JL. DIPONEGORO NO 48",
+     "distance": 0.0
+    },
+    "rt_rw": {
+     "got": "009/015",
+     "want": "009/015",
+     "distance": 0.0
+    },
+    "kel_desa": {
+     "got": "KALIBARU",
+     "want": "KALIBARU",
+     "distance": 0.0
+    },
+    "kecamatan": {
+     "got": "TARUMAJAYA",
+     "want": "TARUMAJAYA",
+     "distance": 0.0
+    },
+    "agama": {
+     "got": "BUDDHA",
+     "want": "BUDDHA",
+     "distance": 0.0
+    },
+    "status_perkawinan": {
+     "got": "CERAI HIDUP",
+     "want": "CERAI HIDUP",
+     "distance": 0.0
+    },
+    "pekerjaan": {
+     "got": "PELAJAR/MAHASISWA",
+     "want": "PELAJAR/MAHASISWA",
+     "distance": 0.0
+    },
+    "kewarganegaraan": {
+     "got": "WNI",
+     "want": "WNI",
+     "distance": 0.0
+    }
+   }
+  },
+  {
+   "image": "ktp_002.png",
+   "seconds": 8.82,
+   "validation_ok": true,
+   "fields": {
+    "nik": {
+     "got": "3101124110773840",
+     "want": "3101124110773840",
+     "distance": 0.0
+    },
+    "nama": {
+     "got": "AYU HANDAYANI",
+     "want": "AYU HANDAYANI",
+     "distance": 0.0
+    },
+    "ttl": {
+     "got": "JAKARTA SELATAN, 01-10-1977",
+     "want": "JAKARTA SELATAN, 01-10-1977",
+     "distance": 0.0
+    },
+    "jenis_kelamin": {
+     "got": "PEREMPUAN",
+     "want": "PEREMPUAN",
+     "distance": 0.0
+    },
+    "gol_darah": {
+     "got": "",
+     "want": "O",
+     "distance": 1.0
+    },
+    "alamat": {
+     "got": "JL. DIPONEGORO NO 108",
+     "want": "JL. DIPONEGORO NO 108",
+     "distance": 0.0
+    },
+    "rt_rw": {
+     "got": "009/008",
+     "want": "009/008",
+     "distance": 0.0
+    },
+    "kel_desa": {
+     "got": "KALIBARU",
+     "want": "KALIBARU",
+     "distance": 0.0
+    },
+    "kecamatan": {
+     "got": "TEBET",
+     "want": "TEBET",
+     "distance": 0.0
+    },
+    "agama": {
+     "got": "KONGHUCU",
+     "want": "KONGHUCU",
+     "distance": 0.0
+    },
+    "status_perkawinan": {
+     "got": "MENIKAH",
+     "want": "MENIKAH",
+     "distance": 0.0
+    },
+    "pekerjaan": {
+     "got": "KARYAWAN SWASTA",
+     "want": "KARYAWAN SWASTA",
+     "distance": 0.0
+    },
+    "kewarganegaraan": {
+     "got": "WNIE",
+     "want": "WNI",
+     "distance": 0.25
+    }
+   }
+  },
+  {
+   "image": "ktp_003.png",
+   "seconds": 8.94,
+   "validation_ok": true,
+   "fields": {
+    "nik": {
+     "got": "3101054302794742",
+     "want": "3101054302794742",
+     "distance": 0.0
+    },
+    "nama": {
+     "got": "INTAN SETIAWAN",
+     "want": "INTAN SETIAWAN",
+     "distance": 0.0
+    },
+    "ttl": {
+     "got": "JAKARTA SELATAN, 03-02-1979",
+     "want": "JAKARTA SELATAN, 03-02-1979",
+     "distance": 0.0
+    },
+    "jenis_kelamin": {
+     "got": "PEREMPUAN",
+     "want": "PEREMPUAN",
+     "distance": 0.0
+    },
+    "gol_darah": {
+     "got": "",
+     "want": "A",
+     "distance": 1.0
+    },
+    "alamat": {
+     "got": "JL. DIPONEGORO NO 69",
+     "want": "JL. DIPONEGORO NO 69",
+     "distance": 0.0
+    },
+    "rt_rw": {
+     "got": "006/005",
+     "want": "006/005",
+     "distance": 0.0
+    },
+    "kel_desa": {
+     "got": "MEKARSARI",
+     "want": "MEKARSARI",
+     "distance": 0.0
+    },
+    "kecamatan": {
+     "got": "TEBET",
+     "want": "TEBET",
+     "distance": 0.0
+    },
+    "agama": {
+     "got": "ISLAM",
+     "want": "ISLAM",
+     "distance": 0.0
+    },
+    "status_perkawinan": {
+     "got": "CERAI HIDUP",
+     "want": "CERAI HIDUP",
+     "distance": 0.0
+    },
+    "pekerjaan": {
+     "got": "KARYAWAN SWASTA",
+     "want": "KARYAWAN SWASTA",
+     "distance": 0.0
+    },
+    "kewarganegaraan": {
+     "got": "WNI",
+     "want": "WNI",
+     "distance": 0.0
+    }
+   }
+  },
+  {
+   "image": "ktp_004.png",
+   "seconds": 9.05,
+   "validation_ok": true,
+   "fields": {
+    "nik": {
+     "got": "5102122104991855",
+     "want": "5102122104991855",
+     "distance": 0.0
+    },
+    "nama": {
+     "got": "BUDISETIAWAN",
+     "want": "BUDI SETIAWAN",
+     "distance": 0.077
+    },
+    "ttl": {
+     "got": "DENPASAR, 21-04-1999",
+     "want": "DENPASAR, 21-04-1999",
+     "distance": 0.0
+    },
+    "jenis_kelamin": {
+     "got": "LAKI-LAKI",
+     "want": "LAKI-LAKI",
+     "distance": 0.0
+    },
+    "gol_darah": {
+     "got": "",
+     "want": "A",
+     "distance": 1.0
+    },
+    "alamat": {
+     "got": "JL. SUDIRMAN NO 49",
+     "want": "JL. SUDIRMAN NO 49",
+     "distance": 0.0
+    },
+    "rt_rw": {
+     "got": "009/002",
+     "want": "009/002",
+     "distance": 0.0
+    },
+    "kel_desa": {
+     "got": "TEBET",
+     "want": "TEBET",
+     "distance": 0.0
+    },
+    "kecamatan": {
+     "got": "DENPASAR SELATAN",
+     "want": "DENPASAR SELATAN",
+     "distance": 0.0
+    },
+    "agama": {
+     "got": "KRISTEN",
+     "want": "KRISTEN",
+     "distance": 0.0
+    },
+    "status_perkawinan": {
+     "got": "BELUM MENIKAH",
+     "want": "BELUM MENIKAH",
+     "distance": 0.0
+    },
+    "pekerjaan": {
+     "got": "GURU",
+     "want": "GURU",
+     "distance": 0.0
+    },
+    "kewarganegaraan": {
+     "got": "WNI",
+     "want": "WNI",
+     "distance": 0.0
+    }
+   }
+  },
+  {
+   "image": "ktp_005.png",
+   "seconds": 9.34,
+   "validation_ok": true,
+   "fields": {
+    "nik": {
+     "got": "5102016203756114",
+     "want": "5102016203756114",
+     "distance": 0.0
+    },
+    "nama": {
+     "got": "MEGA SANTOSO",
+     "want": "MEGA SANTOSO",
+     "distance": 0.0
+    },
+    "ttl": {
+     "got": "DENPASAR, 22-03-1975",
+     "want": "DENPASAR, 22-03-1975",
+     "distance": 0.0
+    },
+    "jenis_kelamin": {
+     "got": "PEREMPUAN",
+     "want": "PEREMPUAN",
+     "distance": 0.0
+    },
+    "gol_darah": {
+     "got": "",
+     "want": "-",
+     "distance": 1.0
+    },
+    "alamat": {
+     "got": "JL. GAJAH MADA NO 63",
+     "want": "JL. GAJAH MADA NO 63",
+     "distance": 0.0
+    },
+    "rt_rw": {
+     "got": "013/004",
+     "want": "013/004",
+     "distance": 0.0
+    },
+    "kel_desa": {
+     "got": "KALIBARU",
+     "want": "KALIBARU",
+     "distance": 0.0
+    },
+    "kecamatan": {
+     "got": "DENPASAR SELATAN",
+     "want": "DENPASAR SELATAN",
+     "distance": 0.0
+    },
+    "agama": {
+     "got": "BUDDHA",
+     "want": "BUDDHA",
+     "distance": 0.0
+    },
+    "status_perkawinan": {
+     "got": "BELUM MENIKAH",
+     "want": "BELUM MENIKAH",
+     "distance": 0.0
+    },
+    "pekerjaan": {
+     "got": "KARYAWAN SWASTA",
+     "want": "KARYAWAN SWASTA",
+     "distance": 0.0
+    },
+    "kewarganegaraan": {
+     "got": "WNI",
+     "want": "WNI",
+     "distance": 0.0
+    }
+   }
+  },
+  {
+   "image": "ktp_006.png",
+   "seconds": 10.52,
+   "validation_ok": true,
+   "fields": {
+    "nik": {
+     "got": "3501014409018314",
+     "want": "3501014409018314",
+     "distance": 0.0
+    },
+    "nama": {
+     "got": "SITI WIBOWO",
+     "want": "SITI WIBOWO",
+     "distance": 0.0
+    },
+    "ttl": {
+     "got": "SURABAYA, 04-09-2001",
+     "want": "SURABAYA, 04-09-2001",
+     "distance": 0.0
+    },
+    "jenis_kelamin": {
+     "got": "PEREMPUAN",
+     "want": "PEREMPUAN",
+     "distance": 0.0
+    },
+    "gol_darah": {
+     "got": "",
+     "want": "AB",
+     "distance": 1.0
+    },
+    "alamat": {
+     "got": "JL. MERDEKA NO 56",
+     "want": "JL. MERDEKA NO 56",
+     "distance": 0.0
+    },
+    "rt_rw": {
+     "got": "007/002",
+     "want": "007/002",
+     "distance": 0.0
+    },
+    "kel_desa": {
+     "got": "MEKARSARI",
+     "want": "MEKARSARI",
+     "distance": 0.0
+    },
+    "kecamatan": {
+     "got": "TAMBAKSARI",
+     "want": "TAMBAKSARI",
+     "distance": 0.0
+    },
+    "agama": {
+     "got": "ISLAM",
+     "want": "ISLAM",
+     "distance": 0.0
+    },
+    "status_perkawinan": {
+     "got": "CERAI MATI",
+     "want": "CERAI MATI",
+     "distance": 0.0
+    },
+    "pekerjaan": {
+     "got": "PELAJAR/MAHASISWA",
+     "want": "PELAJAR/MAHASISWA",
+     "distance": 0.0
+    },
+    "kewarganegaraan": {
+     "got": "WNI",
+     "want": "WNI",
+     "distance": 0.0
+    }
+   }
+  },
+  {
+   "image": "ktp_007.png",
+   "seconds": 10.75,
+   "validation_ok": true,
+   "fields": {
+    "nik": {
+     "got": "3101120301978297",
+     "want": "3101120301978297",
+     "distance": 0.0
+    },
+    "nama": {
+     "got": "RAHMAT PRATAMA",
+     "want": "RAHMAT PRATAMA",
+     "distance": 0.0
+    },
+    "ttl": {
+     "got": "JAKARTA SELATAN, 03-01-1997",
+     "want": "JAKARTA SELATAN, 03-01-1997",
+     "distance": 0.0
+    },
+    "jenis_kelamin": {
+     "got": "LAKI-LAKI",
+     "want": "LAKI-LAKI",
+     "distance": 0.0
+    },
+    "gol_darah": {
+     "got": "",
+     "want": "B",
+     "distance": 1.0
+    },
+    "alamat": {
+     "got": "JL. MERDEKA NO 59",
+     "want": "JL. MERDEKA NO 59",
+     "distance": 0.0
+    },
+    "rt_rw": {
+     "got": "008/008",
+     "want": "008/008",
+     "distance": 0.0
+    },
+    "kel_desa": {
+     "got": "KALIBARU",
+     "want": "KALIBARU",
+     "distance": 0.0
+    },
+    "kecamatan": {
+     "got": "TEBET",
+     "want": "TEBET",
+     "distance": 0.0
+    },
+    "agama": {
+     "got": "HINDU",
+     "want": "HINDU",
+     "distance": 0.0
+    },
+    "status_perkawinan": {
+     "got": "MENIKAH",
+     "want": "MENIKAH",
+     "distance": 0.0
+    },
+    "pekerjaan": {
+     "got": "PETANI",
+     "want": "PETANI",
+     "distance": 0.0
+    },
+    "kewarganegaraan": {
+     "got": "WNI",
+     "want": "WNI",
+     "distance": 0.0
+    }
+   }
+  },
+  {
+   "image": "ktp_008.png",
+   "seconds": 10.22,
+   "validation_ok": true,
+   "fields": {
+    "nik": {
+     "got": "3405015509859082",
+     "want": "3405015509859082",
+     "distance": 0.0
+    },
+    "nama": {
+     "got": "RATNA SANTOSO",
+     "want": "RATNA SANTOSO",
+     "distance": 0.0
+    },
+    "ttl": {
+     "got": "YOGYAKARTA,15-09-1985",
+     "want": "YOGYAKARTA, 15-09-1985",
+     "distance": 0.045
+    },
+    "jenis_kelamin": {
+     "got": "PEREMPUAN",
+     "want": "PEREMPUAN",
+     "distance": 0.0
+    },
+    "gol_darah": {
+     "got": "",
+     "want": "-",
+     "distance": 1.0
+    },
+    "alamat": {
+     "got": "JL. KARTINI NO 22",
+     "want": "JL. KARTINI NO 22",
+     "distance": 0.0
+    },
+    "rt_rw": {
+     "got": "012/008",
+     "want": "012/008",
+     "distance": 0.0
+    },
+    "kel_desa": {
+     "got": "KALIBARU",
+     "want": "KALIBARU",
+     "distance": 0.0
+    },
+    "kecamatan": {
+     "got": "GONDOKUSUMAN",
+     "want": "GONDOKUSUMAN",
+     "distance": 0.0
+    },
+    "agama": {
+     "got": "KRISTEN",
+     "want": "KRISTEN",
+     "distance": 0.0
+    },
+    "status_perkawinan": {
+     "got": "MENIKAH",
+     "want": "MENIKAH",
+     "distance": 0.0
+    },
+    "pekerjaan": {
+     "got": "KARYAWAN SWASTA",
+     "want": "KARYAWAN SWASTA",
+     "distance": 0.0
+    },
+    "kewarganegaraan": {
+     "got": "WNI",
+     "want": "WNI",
+     "distance": 0.0
+    }
+   }
+  },
+  {
+   "image": "ktp_009.png",
+   "seconds": 11.49,
+   "validation_ok": true,
+   "fields": {
+    "nik": {
+     "got": "5101126708892626",
+     "want": "5101126708892626",
+     "distance": 0.0
+    },
+    "nama": {
+     "got": "SITI PRATAMA",
+     "want": "SITI PRATAMA",
+     "distance": 0.0
+    },
+    "ttl": {
+     "got": "DENPASAR, 27-08-1989",
+     "want": "DENPASAR, 27-08-1989",
+     "distance": 0.0
+    },
+    "jenis_kelamin": {
+     "got": "PEREMPUAN",
+     "want": "PEREMPUAN",
+     "distance": 0.0
+    },
+    "gol_darah": {
+     "got": "",
+     "want": "AB",
+     "distance": 1.0
+    },
+    "alamat": {
+     "got": "JL. GAJAH MADA NO 10",
+     "want": "JL. GAJAH MADA NO 10",
+     "distance": 0.0
+    },
+    "rt_rw": {
+     "got": "004/012",
+     "want": "004/012",
+     "distance": 0.0
+    },
+    "kel_desa": {
+     "got": "CIBINONG",
+     "want": "CIBINONG",
+     "distance": 0.0
+    },
+    "kecamatan": {
+     "got": "DENPASAR SELATAN",
+     "want": "DENPASAR SELATAN",
+     "distance": 0.0
+    },
+    "agama": {
+     "got": "ISLAM",
+     "want": "ISLAM",
+     "distance": 0.0
+    },
+    "status_perkawinan": {
+     "got": "CERAI MATI",
+     "want": "CERAI MATI",
+     "distance": 0.0
+    },
+    "pekerjaan": {
+     "got": "PETANI",
+     "want": "PETANI",
+     "distance": 0.0
+    },
+    "kewarganegaraan": {
+     "got": "WNIE",
+     "want": "WNI",
+     "distance": 0.25
+    }
+   }
+  },
+  {
+   "image": "ktp_010.png",
+   "seconds": 10.27,
+   "validation_ok": true,
+   "fields": {
+    "nik": {
+     "got": "3402095609001543",
+     "want": "3402095609001543",
+     "distance": 0.0
+    },
+    "nama": {
+     "got": "PUTRI NUGRAHA",
+     "want": "PUTRI NUGRAHA",
+     "distance": 0.0
+    },
+    "ttl": {
+     "got": "YOGYAKARTA, 16-09-2000",
+     "want": "YOGYAKARTA, 16-09-2000",
+     "distance": 0.0
+    },
+    "jenis_kelamin": {
+     "got": "PEREMPUAN",
+     "want": "PEREMPUAN",
+     "distance": 0.0
+    },
+    "gol_darah": {
+     "got": "",
+     "want": "-",
+     "distance": 1.0
+    },
+    "alamat": {
+     "got": "JL. SUDIRMAN NO 12",
+     "want": "JL. SUDIRMAN NO 12",
+     "distance": 0.0
+    },
+    "rt_rw": {
+     "got": "009/013",
+     "want": "009/013",
+     "distance": 0.0
+    },
+    "kel_desa": {
+     "got": "SUKAMAJU",
+     "want": "SUKAMAJU",
+     "distance": 0.0
+    },
+    "kecamatan": {
+     "got": "GONDOKUSUMAN",
+     "want": "GONDOKUSUMAN",
+     "distance": 0.0
+    },
+    "agama": {
+     "got": "BUDDHA",
+     "want": "BUDDHA",
+     "distance": 0.0
+    },
+    "status_perkawinan": {
+     "got": "CERAI MATI",
+     "want": "CERAI MATI",
+     "distance": 0.0
+    },
+    "pekerjaan": {
+     "got": "WIRASWASTA",
+     "want": "WIRASWASTA",
+     "distance": 0.0
+    },
+    "kewarganegaraan": {
+     "got": "WNI",
+     "want": "WNI",
+     "distance": 0.0
+    }
+   }
+  },
+  {
+   "image": "ktp_011.png",
+   "seconds": 9.2,
+   "validation_ok": true,
+   "fields": {
+    "nik": {
+     "got": "3405051201877541",
+     "want": "3405051201877541",
+     "distance": 0.0
+    },
+    "nama": {
+     "got": "FAJAR NUGRAHA",
+     "want": "FAJAR NUGRAHA",
+     "distance": 0.0
+    },
+    "ttl": {
+     "got": "YOGYAKARTA, 12-01-1987",
+     "want": "YOGYAKARTA, 12-01-1987",
+     "distance": 0.0
+    },
+    "jenis_kelamin": {
+     "got": "LAKI-LAKI",
+     "want": "LAKI-LAKI",
+     "distance": 0.0
+    },
+    "gol_darah": {
+     "got": "",
+     "want": "O",
+     "distance": 1.0
+    },
+    "alamat": {
+     "got": "JL. DIPONEGORO NO 1",
+     "want": "JL. DIPONEGORO NO 1",
+     "distance": 0.0
+    },
+    "rt_rw": {
+     "got": "011/010",
+     "want": "011/010",
+     "distance": 0.0
+    },
+    "kel_desa": {
+     "got": "MEKARSARI",
+     "want": "MEKARSARI",
+     "distance": 0.0
+    },
+    "kecamatan": {
+     "got": "GONDOKUSUMAN",
+     "want": "GONDOKUSUMAN",
+     "distance": 0.0
+    },
+    "agama": {
+     "got": "HINDU",
+     "want": "HINDU",
+     "distance": 0.0
+    },
+    "status_perkawinan": {
+     "got": "CERAI HIDUP",
+     "want": "CERAI HIDUP",
+     "distance": 0.0
+    },
+    "pekerjaan": {
+     "got": "KARYAWAN SWASTA",
+     "want": "KARYAWAN SWASTA",
+     "distance": 0.0
+    },
+    "kewarganegaraan": {
+     "got": "WNI",
+     "want": "WNI",
+     "distance": 0.0
+    }
+   }
+  },
+  {
+   "image": "ktp_012.png",
+   "seconds": 8.97,
+   "validation_ok": true,
+   "fields": {
+    "nik": {
+     "got": "3501012803963070",
+     "want": "3501012803963070",
+     "distance": 0.0
+    },
+    "nama": {
+     "got": "RAHMAT PRATAMA",
+     "want": "RAHMAT PRATAMA",
+     "distance": 0.0
+    },
+    "ttl": {
+     "got": "SURABAYA, 28-03-1996",
+     "want": "SURABAYA, 28-03-1996",
+     "distance": 0.0
+    },
+    "jenis_kelamin": {
+     "got": "LAKI-LAKI",
+     "want": "LAKI-LAKI",
+     "distance": 0.0
+    },
+    "gol_darah": {
+     "got": "",
+     "want": "B",
+     "distance": 1.0
+    },
+    "alamat": {
+     "got": "JL. DIPONEGORO NO 109",
+     "want": "JL. DIPONEGORO NO 109",
+     "distance": 0.0
+    },
+    "rt_rw": {
+     "got": "004/012",
+     "want": "004/012",
+     "distance": 0.0
+    },
+    "kel_desa": {
+     "got": "CIBINONG",
+     "want": "CIBINONG",
+     "distance": 0.0
+    },
+    "kecamatan": {
+     "got": "TAMBAKSARI",
+     "want": "TAMBAKSARI",
+     "distance": 0.0
+    },
+    "agama": {
+     "got": "ISLAM",
+     "want": "ISLAM",
+     "distance": 0.0
+    },
+    "status_perkawinan": {
+     "got": "CERAI MATI",
+     "want": "CERAI MATI",
+     "distance": 0.0
+    },
+    "pekerjaan": {
+     "got": "KARYAWAN SWASTA",
+     "want": "KARYAWAN SWASTA",
+     "distance": 0.0
+    },
+    "kewarganegaraan": {
+     "got": "WNI",
+     "want": "WNI",
+     "distance": 0.0
+    }
+   }
+  },
+  {
+   "image": "ktp_013.png",
+   "seconds": 9.24,
+   "validation_ok": true,
+   "fields": {
+    "nik": {
+     "got": "3278016202986500",
+     "want": "3278016202986500",
+     "distance": 0.0
+    },
+    "nama": {
+     "got": "MEGA MAHENDRA",
+     "want": "MEGA MAHENDRA",
+     "distance": 0.0
+    },
+    "ttl": {
+     "got": "BEKASI, 22-02-1998",
+     "want": "BEKASI, 22-02-1998",
+     "distance": 0.0
+    },
+    "jenis_kelamin": {
+     "got": "PEREMPUAN",
+     "want": "PEREMPUAN",
+     "distance": 0.0
+    },
+    "gol_darah": {
+     "got": "",
+     "want": "O",
+     "distance": 1.0
+    },
+    "alamat": {
+     "got": "JL. GAJAH MADA NO 29",
+     "want": "JL. GAJAH MADA NO 29",
+     "distance": 0.0
+    },
+    "rt_rw": {
+     "got": "014/015",
+     "want": "014/015",
+     "distance": 0.0
+    },
+    "kel_desa": {
+     "got": "CIBINONG",
+     "want": "CIBINONG",
+     "distance": 0.0
+    },
+    "kecamatan": {
+     "got": "TARUMAJAYA",
+     "want": "TARUMAJAYA",
+     "distance": 0.0
+    },
+    "agama": {
+     "got": "KATOLIK",
+     "want": "KATOLIK",
+     "distance": 0.0
+    },
+    "status_perkawinan": {
+     "got": "CERAI HIDUP",
+     "want": "CERAI HIDUP",
+     "distance": 0.0
+    },
+    "pekerjaan": {
+     "got": "PEGAWAI NEGERI SIPIL",
+     "want": "PEGAWAI NEGERI SIPIL",
+     "distance": 0.0
+    },
+    "kewarganegaraan": {
+     "got": "WNI",
+     "want": "WNI",
+     "distance": 0.0
+    }
+   }
+  },
+  {
+   "image": "ktp_014.png",
+   "seconds": 9.42,
+   "validation_ok": true,
+   "fields": {
+    "nik": {
+     "got": "3105090104042413",
+     "want": "3105090104042413",
+     "distance": 0.0
+    },
+    "nama": {
+     "got": "BUDI NUGRAHA",
+     "want": "BUDI NUGRAHA",
+     "distance": 0.0
+    },
+    "ttl": {
+     "got": "JAKARTA SELATAN, 01-04-2004",
+     "want": "JAKARTA SELATAN, 01-04-2004",
+     "distance": 0.0
+    },
+    "jenis_kelamin": {
+     "got": "LAKI-LAKI",
+     "want": "LAKI-LAKI",
+     "distance": 0.0
+    },
+    "gol_darah": {
+     "got": "",
+     "want": "A",
+     "distance": 1.0
+    },
+    "alamat": {
+     "got": "JL. SUDIRMAN NO 15",
+     "want": "JL. SUDIRMAN NO 15",
+     "distance": 0.0
+    },
+    "rt_rw": {
+     "got": "006/008",
+     "want": "006/008",
+     "distance": 0.0
+    },
+    "kel_desa": {
+     "got": "CIBINONG",
+     "want": "CIBINONG",
+     "distance": 0.0
+    },
+    "kecamatan": {
+     "got": "TEBET",
+     "want": "TEBET",
+     "distance": 0.0
+    },
+    "agama": {
+     "got": "KATOLIK",
+     "want": "KATOLIK",
+     "distance": 0.0
+    },
+    "status_perkawinan": {
+     "got": "CERAI MATI",
+     "want": "CERAI MATI",
+     "distance": 0.0
+    },
+    "pekerjaan": {
+     "got": "PEGAWAI NEGERI SIPIL",
+     "want": "PEGAWAI NEGERI SIPIL",
+     "distance": 0.0
+    },
+    "kewarganegaraan": {
+     "got": "WNI",
+     "want": "WNI",
+     "distance": 0.0
+    }
+   }
+  },
+  {
+   "image": "ktp_015.png",
+   "seconds": 9.57,
+   "validation_ok": true,
+   "fields": {
+    "nik": {
+     "got": "3501095401893645",
+     "want": "3501095401893645",
+     "distance": 0.0
+    },
+    "nama": {
+     "got": "INTAN PRATAMA",
+     "want": "INTAN PRATAMA",
+     "distance": 0.0
+    },
+    "ttl": {
+     "got": "SURABAYA, 14-01-1989",
+     "want": "SURABAYA, 14-01-1989",
+     "distance": 0.0
+    },
+    "jenis_kelamin": {
+     "got": "PEREMPUAN",
+     "want": "PEREMPUAN",
+     "distance": 0.0
+    },
+    "gol_darah": {
+     "got": "",
+     "want": "AB",
+     "distance": 1.0
+    },
+    "alamat": {
+     "got": "JL. GAJAH MADA NO 105",
+     "want": "JL. GAJAH MADA NO 105",
+     "distance": 0.0
+    },
+    "rt_rw": {
+     "got": "006/011",
+     "want": "006/011",
+     "distance": 0.0
+    },
+    "kel_desa": {
+     "got": "MEKARSARI",
+     "want": "MEKARSARI",
+     "distance": 0.0
+    },
+    "kecamatan": {
+     "got": "TAMBAKSARI",
+     "want": "TAMBAKSARI",
+     "distance": 0.0
+    },
+    "agama": {
+     "got": "KONGHUCU",
+     "want": "KONGHUCU",
+     "distance": 0.0
+    },
+    "status_perkawinan": {
+     "got": "CERAI HIDUP",
+     "want": "CERAI HIDUP",
+     "distance": 0.0
+    },
+    "pekerjaan": {
+     "got": "PELAJAR/MAHASISWA",
+     "want": "PELAJAR/MAHASISWA",
+     "distance": 0.0
+    },
+    "kewarganegaraan": {
+     "got": "WNIE",
+     "want": "WNI",
+     "distance": 0.25
+    }
+   }
+  },
+  {
+   "image": "ktp_016.png",
+   "seconds": 9.45,
+   "validation_ok": true,
+   "fields": {
+    "nik": {
+     "got": "5101052312801805",
+     "want": "5101052312801805",
+     "distance": 0.0
+    },
+    "nama": {
+     "got": "FAJAR MAHENDRA",
+     "want": "FAJAR MAHENDRA",
+     "distance": 0.0
+    },
+    "ttl": {
+     "got": "DENPASAR, 23-12-1980",
+     "want": "DENPASAR, 23-12-1980",
+     "distance": 0.0
+    },
+    "jenis_kelamin": {
+     "got": "LAKI-LAKI",
+     "want": "LAKI-LAKI",
+     "distance": 0.0
+    },
+    "gol_darah": {
+     "got": "",
+     "want": "-",
+     "distance": 1.0
+    },
+    "alamat": {
+     "got": "JL. KARTINI NO 105",
+     "want": "JL. KARTINI NO 105",
+     "distance": 0.0
+    },
+    "rt_rw": {
+     "got": "012/007",
+     "want": "012/007",
+     "distance": 0.0
+    },
+    "kel_desa": {
+     "got": "CIBINONG",
+     "want": "CIBINONG",
+     "distance": 0.0
+    },
+    "kecamatan": {
+     "got": "DENPASAR SELATAN",
+     "want": "DENPASAR SELATAN",
+     "distance": 0.0
+    },
+    "agama": {
+     "got": "BUDDHA",
+     "want": "BUDDHA",
+     "distance": 0.0
+    },
+    "status_perkawinan": {
+     "got": "CERAI HIDUP",
+     "want": "CERAI HIDUP",
+     "distance": 0.0
+    },
+    "pekerjaan": {
+     "got": "GURU",
+     "want": "GURU",
+     "distance": 0.0
+    },
+    "kewarganegaraan": {
+     "got": "WNIE",
+     "want": "WNI",
+     "distance": 0.25
+    }
+   }
+  },
+  {
+   "image": "ktp_017.png",
+   "seconds": 9.6,
+   "validation_ok": true,
+   "fields": {
+    "nik": {
+     "got": "3102092108814842",
+     "want": "3102092108814842",
+     "distance": 0.0
+    },
+    "nama": {
+     "got": "FAJAR PRATAMA",
+     "want": "FAJAR PRATAMA",
+     "distance": 0.0
+    },
+    "ttl": {
+     "got": "JAKARTA SELATAN, 21-08-1981",
+     "want": "JAKARTA SELATAN, 21-08-1981",
+     "distance": 0.0
+    },
+    "jenis_kelamin": {
+     "got": "LAKI-LAKI",
+     "want": "LAKI-LAKI",
+     "distance": 0.0
+    },
+    "gol_darah": {
+     "got": "",
+     "want": "O",
+     "distance": 1.0
+    },
+    "alamat": {
+     "got": "JL. SUDIRMAN NO 33",
+     "want": "JL. SUDIRMAN NO 33",
+     "distance": 0.0
+    },
+    "rt_rw": {
+     "got": "015/012",
+     "want": "015/012",
+     "distance": 0.0
+    },
+    "kel_desa": {
+     "got": "SUKAMAJU",
+     "want": "SUKAMAJU",
+     "distance": 0.0
+    },
+    "kecamatan": {
+     "got": "TEBET",
+     "want": "TEBET",
+     "distance": 0.0
+    },
+    "agama": {
+     "got": "KATOLIK",
+     "want": "KATOLIK",
+     "distance": 0.0
+    },
+    "status_perkawinan": {
+     "got": "MENIKAH",
+     "want": "MENIKAH",
+     "distance": 0.0
+    },
+    "pekerjaan": {
+     "got": "PETANI",
+     "want": "PETANI",
+     "distance": 0.0
+    },
+    "kewarganegaraan": {
+     "got": "WNIE",
+     "want": "WNI",
+     "distance": 0.25
+    }
+   }
+  },
+  {
+   "image": "ktp_018.png",
+   "seconds": 9.25,
+   "validation_ok": true,
+   "fields": {
+    "nik": {
+     "got": "3271121905911765",
+     "want": "3271121905911765",
+     "distance": 0.0
+    },
+    "nama": {
+     "got": "HENDRA RAMADHAN",
+     "want": "HENDRA RAMADHAN",
+     "distance": 0.0
+    },
+    "ttl": {
+     "got": "BEKASI, 19-05-1991",
+     "want": "BEKASI, 19-05-1991",
+     "distance": 0.0
+    },
+    "jenis_kelamin": {
+     "got": "LAKI-LAKI",
+     "want": "LAKI-LAKI",
+     "distance": 0.0
+    },
+    "gol_darah": {
+     "got": "",
+     "want": "B",
+     "distance": 1.0
+    },
+    "alamat": {
+     "got": "JL. GAJAH MADA NO 35",
+     "want": "JL. GAJAH MADA NO 35",
+     "distance": 0.0
+    },
+    "rt_rw": {
+     "got": "014/002",
+     "want": "014/002",
+     "distance": 0.0
+    },
+    "kel_desa": {
+     "got": "CIBINONG",
+     "want": "CIBINONG",
+     "distance": 0.0
+    },
+    "kecamatan": {
+     "got": "TARUMAJAYA",
+     "want": "TARUMAJAYA",
+     "distance": 0.0
+    },
+    "agama": {
+     "got": "KATOLIK",
+     "want": "KATOLIK",
+     "distance": 0.0
+    },
+    "status_perkawinan": {
+     "got": "BELUM MENIKAH",
+     "want": "BELUM MENIKAH",
+     "distance": 0.0
+    },
+    "pekerjaan": {
+     "got": "PROGRAMMER",
+     "want": "PROGRAMMER",
+     "distance": 0.0
+    },
+    "kewarganegaraan": {
+     "got": "WNIE",
+     "want": "WNI",
+     "distance": 0.25
+    }
+   }
+  },
+  {
+   "image": "ktp_019.png",
+   "seconds": 9.59,
+   "validation_ok": true,
+   "fields": {
+    "nik": {
+     "got": "3101050103931229",
+     "want": "3101050103931229",
+     "distance": 0.0
+    },
+    "nama": {
+     "got": "AGUS RAMADHAN",
+     "want": "AGUS RAMADHAN",
+     "distance": 0.0
+    },
+    "ttl": {
+     "got": "JAKARTA SELATAN, 01-03-1993",
+     "want": "JAKARTA SELATAN, 01-03-1993",
+     "distance": 0.0
+    },
+    "jenis_kelamin": {
+     "got": "LAKI-LAKI",
+     "want": "LAKI-LAKI",
+     "distance": 0.0
+    },
+    "gol_darah": {
+     "got": "",
+     "want": "O",
+     "distance": 1.0
+    },
+    "alamat": {
+     "got": "JL. GAJAH MADA NO 61",
+     "want": "JL. GAJAH MADA NO 61",
+     "distance": 0.0
+    },
+    "rt_rw": {
+     "got": "010/008",
+     "want": "010/008",
+     "distance": 0.0
+    },
+    "kel_desa": {
+     "got": "KALIBARU",
+     "want": "KALIBARU",
+     "distance": 0.0
+    },
+    "kecamatan": {
+     "got": "TEBET",
+     "want": "TEBET",
+     "distance": 0.0
+    },
+    "agama": {
+     "got": "KRISTEN",
+     "want": "KRISTEN",
+     "distance": 0.0
+    },
+    "status_perkawinan": {
+     "got": "MENIKAH",
+     "want": "MENIKAH",
+     "distance": 0.0
+    },
+    "pekerjaan": {
+     "got": "PEGAWAI NEGERI SIPIL",
+     "want": "PEGAWAI NEGERI SIPIL",
+     "distance": 0.0
+    },
+    "kewarganegaraan": {
+     "got": "WNI",
+     "want": "WNI",
+     "distance": 0.0
+    }
+   }
+  }
+ ]
+}

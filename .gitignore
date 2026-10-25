@@ -1,0 +1,20 @@
+.models/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+data/synthetic/*.png
+data/synthetic/*.jpg
+data/golden/*.png
+data/golden/*.jpg
+!data/golden/ground_truth.json
+.env
+
+# scratch work dirs
+data/api_work/
+data/bench_work/
+data/demo_work/
+data/assets_work/
+data/model_work/

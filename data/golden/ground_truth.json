@@ -1,0 +1,2374 @@
+[
+ {
+  "image": "ktp_000.png",
+  "spec": {
+   "provinsi": "PROVINSI DKI JAKARTA",
+   "kabupaten": "KOTA JAKARTA SELATAN",
+   "nik": "3101125311907994",
+   "nama": "AYU SETIAWAN",
+   "ttl_tempat": "JAKARTA SELATAN",
+   "ttl_tanggal": "1990-11-13",
+   "jenis_kelamin": "PEREMPUAN",
+   "gol_darah": "B",
+   "alamat": "JL. MERDEKA NO 56",
+   "rt_rw": "010/013",
+   "kel_desa": "SUKAMAJU",
+   "kecamatan": "TEBET",
+   "agama": "KONGHUCU",
+   "status_perkawinan": "CERAI MATI",
+   "pekerjaan": "PEGAWAI NEGERI SIPIL",
+   "kewarganegaraan": "WNI",
+   "berlaku_hingga": "SEUMUR HIDUP"
+  },
+  "bboxes": {
+   "nik": [
+    106,
+    56,
+    285,
+    88
+   ],
+   "nama": [
+    134,
+    96,
+    241,
+    118
+   ],
+   "ttl": [
+    136,
+    120,
+    344,
+    142
+   ],
+   "jenis_kelamin": [
+    134,
+    144,
+    226,
+    166
+   ],
+   "gol_darah": [
+    394,
+    144,
+    407,
+    166
+   ],
+   "alamat": [
+    134,
+    168,
+    273,
+    190
+   ],
+   "rt_rw": [
+    134,
+    192,
+    188,
+    214
+   ],
+   "kel_desa": [
+    134,
+    216,
+    214,
+    238
+   ],
+   "kecamatan": [
+    134,
+    240,
+    183,
+    262
+   ],
+   "agama": [
+    134,
+    282,
+    219,
+    304
+   ],
+   "status_perkawinan": [
+    148,
+    306,
+    231,
+    328
+   ],
+   "pekerjaan": [
+    134,
+    330,
+    298,
+    352
+   ],
+   "kewarganegaraan": [
+    145,
+    354,
+    176,
+    376
+   ],
+   "berlaku_hingga": [
+    134,
+    378,
+    246,
+    400
+   ],
+   "foto": [
+    610,
+    100,
+    810,
+    350
+   ]
+  },
+  "perturb": null
+ },
+ {
+  "image": "ktp_001.png",
+  "spec": {
+   "provinsi": "PROVINSI JAWA BARAT",
+   "kabupaten": "KAB BEKASI",
+   "nik": "3273124710839523",
+   "nama": "RATNA MAHENDRA",
+   "ttl_tempat": "BEKASI",
+   "ttl_tanggal": "1983-10-07",
+   "jenis_kelamin": "PEREMPUAN",
+   "gol_darah": "-",
+   "alamat": "JL. MERDEKA NO 82",
+   "rt_rw": "007/013",
+   "kel_desa": "TEBET",
+   "kecamatan": "TARUMAJAYA",
+   "agama": "KATOLIK",
+   "status_perkawinan": "CERAI MATI",
+   "pekerjaan": "PROGRAMMER",
+   "kewarganegaraan": "WNI",
+   "berlaku_hingga": "SEUMUR HIDUP"
+  },
+  "bboxes": {
+   "nik": [
+    106,
+    56,
+    288,
+    88
+   ],
+   "nama": [
+    134,
+    96,
+    267,
+    118
+   ],
+   "ttl": [
+    136,
+    120,
+    269,
+    142
+   ],
+   "jenis_kelamin": [
+    134,
+    144,
+    226,
+    166
+   ],
+   "gol_darah": [
+    394,
+    144,
+    402,
+    166
+   ],
+   "alamat": [
+    134,
+    168,
+    273,
+    190
+   ],
+   "rt_rw": [
+    134,
+    192,
+    188,
+    214
+   ],
+   "kel_desa": [
+    134,
+    216,
+    183,
+    238
+   ],
+   "kecamatan": [
+    134,
+    240,
+    229,
+    262
+   ],
+   "agama": [
+    134,
+    282,
+    195,
+    304
+   ],
+   "status_perkawinan": [
+    148,
+    306,
+    231,
+    328
+   ],
+   "pekerjaan": [
+    134,
+    330,
+    241,
+    352
+   ],
+   "kewarganegaraan": [
+    145,
+    354,
+    176,
+    376
+   ],
+   "berlaku_hingga": [
+    134,
+    378,
+    246,
+    400
+   ],
+   "foto": [
+    610,
+    100,
+    810,
+    350
+   ]
+  },
+  "perturb": null
+ },
+ {
+  "image": "ktp_002.png",
+  "spec": {
+   "provinsi": "PROVINSI DKI JAKARTA",
+   "kabupaten": "KOTA JAKARTA SELATAN",
+   "nik": "3101054110779025",
+   "nama": "AYU HANDAYANI",
+   "ttl_tempat": "JAKARTA SELATAN",
+   "ttl_tanggal": "1977-10-01",
+   "jenis_kelamin": "PEREMPUAN",
+   "gol_darah": "O",
+   "alamat": "JL. GAJAH MADA NO 92",
+   "rt_rw": "008/009",
+   "kel_desa": "TEBET",
+   "kecamatan": "TEBET",
+   "agama": "HINDU",
+   "status_perkawinan": "CERAI MATI",
+   "pekerjaan": "GURU",
+   "kewarganegaraan": "WNI",
+   "berlaku_hingga": "SEUMUR HIDUP"
+  },
+  "bboxes": {
+   "nik": [
+    106,
+    56,
+    286,
+    88
+   ],
+   "nama": [
+    134,
+    96,
+    249,
+    118
+   ],
+   "ttl": [
+    136,
+    120,
+    345,
+    142
+   ],
+   "jenis_kelamin": [
+    134,
+    144,
+    226,
+    166
+   ],
+   "gol_darah": [
+    394,
+    144,
+    408,
+    166
+   ],
+   "alamat": [
+    134,
+    168,
+    295,
+    190
+   ],
+   "rt_rw": [
+    134,
+    192,
+    188,
+    214
+   ],
+   "kel_desa": [
+    134,
+    216,
+    183,
+    238
+   ],
+   "kecamatan": [
+    134,
+    240,
+    183,
+    262
+   ],
+   "agama": [
+    134,
+    282,
+    182,
+    304
+   ],
+   "status_perkawinan": [
+    148,
+    306,
+    231,
+    328
+   ],
+   "pekerjaan": [
+    134,
+    330,
+    179,
+    352
+   ],
+   "kewarganegaraan": [
+    145,
+    354,
+    176,
+    376
+   ],
+   "berlaku_hingga": [
+    134,
+    378,
+    246,
+    400
+   ],
+   "foto": [
+    610,
+    100,
+    810,
+    350
+   ]
+  },
+  "perturb": null
+ },
+ {
+  "image": "ktp_003.png",
+  "spec": {
+   "provinsi": "PROVINSI DKI JAKARTA",
+   "kabupaten": "KOTA JAKARTA SELATAN",
+   "nik": "3102014302799002",
+   "nama": "INTAN SETIAWAN",
+   "ttl_tempat": "JAKARTA SELATAN",
+   "ttl_tanggal": "1979-02-03",
+   "jenis_kelamin": "PEREMPUAN",
+   "gol_darah": "A",
+   "alamat": "JL. KARTINI NO 29",
+   "rt_rw": "009/009",
+   "kel_desa": "CIBINONG",
+   "kecamatan": "TEBET",
+   "agama": "KATOLIK",
+   "status_perkawinan": "MENIKAH",
+   "pekerjaan": "PETANI",
+   "kewarganegaraan": "WNI",
+   "berlaku_hingga": "SEUMUR HIDUP"
+  },
+  "bboxes": {
+   "nik": [
+    106,
+    56,
+    288,
+    88
+   ],
+   "nama": [
+    134,
+    96,
+    254,
+    118
+   ],
+   "ttl": [
+    136,
+    120,
+    345,
+    142
+   ],
+   "jenis_kelamin": [
+    134,
+    144,
+    226,
+    166
+   ],
+   "gol_darah": [
+    394,
+    144,
+    407,
+    166
+   ],
+   "alamat": [
+    134,
+    168,
+    259,
+    190
+   ],
+   "rt_rw": [
+    134,
+    192,
+    188,
+    214
+   ],
+   "kel_desa": [
+    134,
+    216,
+    207,
+    238
+   ],
+   "kecamatan": [
+    134,
+    240,
+    183,
+    262
+   ],
+   "agama": [
+    134,
+    282,
+    195,
+    304
+   ],
+   "status_perkawinan": [
+    148,
+    306,
+    215,
+    328
+   ],
+   "pekerjaan": [
+    134,
+    330,
+    187,
+    352
+   ],
+   "kewarganegaraan": [
+    145,
+    354,
+    176,
+    376
+   ],
+   "berlaku_hingga": [
+    134,
+    378,
+    246,
+    400
+   ],
+   "foto": [
+    610,
+    100,
+    810,
+    350
+   ]
+  },
+  "perturb": null
+ },
+ {
+  "image": "ktp_004.png",
+  "spec": {
+   "provinsi": "PROVINSI BALI",
+   "kabupaten": "KOTA DENPASAR",
+   "nik": "5102122104991855",
+   "nama": "BUDI SETIAWAN",
+   "ttl_tempat": "DENPASAR",
+   "ttl_tanggal": "1999-04-21",
+   "jenis_kelamin": "LAKI-LAKI",
+   "gol_darah": "A",
+   "alamat": "JL. SUDIRMAN NO 112",
+   "rt_rw": "004/007",
+   "kel_desa": "TEBET",
+   "kecamatan": "DENPASAR SELATAN",
+   "agama": "ISLAM",
+   "status_perkawinan": "MENIKAH",
+   "pekerjaan": "PELAJAR/MAHASISWA",
+   "kewarganegaraan": "WNI",
+   "berlaku_hingga": "SEUMUR HIDUP"
+  },
+  "bboxes": {
+   "nik": [
+    106,
+    56,
+    288,
+    88
+   ],
+   "nama": [
+    134,
+    96,
+    247,
+    118
+   ],
+   "ttl": [
+    136,
+    120,
+    295,
+    142
+   ],
+   "jenis_kelamin": [
+    134,
+    144,
+    203,
+    166
+   ],
+   "gol_darah": [
+    394,
+    144,
+    407,
+    166
+   ],
+   "alamat": [
+    134,
+    168,
+    286,
+    190
+   ],
+   "rt_rw": [
+    134,
+    192,
+    188,
+    214
+   ],
+   "kel_desa": [
+    134,
+    216,
+    183,
+    238
+   ],
+   "kecamatan": [
+    134,
+    240,
+    279,
+    262
+   ],
+   "agama": [
+    134,
+    282,
+    180,
+    304
+   ],
+   "status_perkawinan": [
+    148,
+    306,
+    215,
+    328
+   ],
+   "pekerjaan": [
+    134,
+    330,
+    289,
+    352
+   ],
+   "kewarganegaraan": [
+    145,
+    354,
+    176,
+    376
+   ],
+   "berlaku_hingga": [
+    134,
+    378,
+    246,
+    400
+   ],
+   "foto": [
+    610,
+    100,
+    810,
+    350
+   ]
+  },
+  "perturb": null
+ },
+ {
+  "image": "ktp_005.png",
+  "spec": {
+   "provinsi": "PROVINSI BALI",
+   "kabupaten": "KOTA DENPASAR",
+   "nik": "5102016203756114",
+   "nama": "MEGA SANTOSO",
+   "ttl_tempat": "DENPASAR",
+   "ttl_tanggal": "1975-03-22",
+   "jenis_kelamin": "PEREMPUAN",
+   "gol_darah": "-",
+   "alamat": "JL. KARTINI NO 35",
+   "rt_rw": "008/013",
+   "kel_desa": "MEKARSARI",
+   "kecamatan": "DENPASAR SELATAN",
+   "agama": "KONGHUCU",
+   "status_perkawinan": "CERAI MATI",
+   "pekerjaan": "PROGRAMMER",
+   "kewarganegaraan": "WNI",
+   "berlaku_hingga": "SEUMUR HIDUP"
+  },
+  "bboxes": {
+   "nik": [
+    106,
+    56,
+    286,
+    88
+   ],
+   "nama": [
+    134,
+    96,
+    250,
+    118
+   ],
+   "ttl": [
+    136,
+    120,
+    295,
+    142
+   ],
+   "jenis_kelamin": [
+    134,
+    144,
+    226,
+    166
+   ],
+   "gol_darah": [
+    394,
+    144,
+    402,
+    166
+   ],
+   "alamat": [
+    134,
+    168,
+    259,
+    190
+   ],
+   "rt_rw": [
+    134,
+    192,
+    188,
+    214
+   ],
+   "kel_desa": [
+    134,
+    216,
+    220,
+    238
+   ],
+   "kecamatan": [
+    134,
+    240,
+    279,
+    262
+   ],
+   "agama": [
+    134,
+    282,
+    219,
+    304
+   ],
+   "status_perkawinan": [
+    148,
+    306,
+    231,
+    328
+   ],
+   "pekerjaan": [
+    134,
+    330,
+    241,
+    352
+   ],
+   "kewarganegaraan": [
+    145,
+    354,
+    176,
+    376
+   ],
+   "berlaku_hingga": [
+    134,
+    378,
+    246,
+    400
+   ],
+   "foto": [
+    610,
+    100,
+    810,
+    350
+   ]
+  },
+  "perturb": null
+ },
+ {
+  "image": "ktp_006.png",
+  "spec": {
+   "provinsi": "PROVINSI JAWA TIMUR",
+   "kabupaten": "KOTA SURABAYA",
+   "nik": "3505054409010951",
+   "nama": "SITI WIBOWO",
+   "ttl_tempat": "SURABAYA",
+   "ttl_tanggal": "2001-09-04",
+   "jenis_kelamin": "PEREMPUAN",
+   "gol_darah": "AB",
+   "alamat": "JL. DIPONEGORO NO 5",
+   "rt_rw": "002/007",
+   "kel_desa": "KALIBARU",
+   "kecamatan": "TAMBAKSARI",
+   "agama": "ISLAM",
+   "status_perkawinan": "MENIKAH",
+   "pekerjaan": "PELAJAR/MAHASISWA",
+   "kewarganegaraan": "WNI",
+   "berlaku_hingga": "SEUMUR HIDUP"
+  },
+  "bboxes": {
+   "nik": [
+    106,
+    56,
+    288,
+    88
+   ],
+   "nama": [
+    134,
+    96,
+    229,
+    118
+   ],
+   "ttl": [
+    136,
+    120,
+    293,
+    142
+   ],
+   "jenis_kelamin": [
+    134,
+    144,
+    226,
+    166
+   ],
+   "gol_darah": [
+    394,
+    144,
+    416,
+    166
+   ],
+   "alamat": [
+    134,
+    168,
+    293,
+    190
+   ],
+   "rt_rw": [
+    134,
+    192,
+    188,
+    214
+   ],
+   "kel_desa": [
+    134,
+    216,
+    207,
+    238
+   ],
+   "kecamatan": [
+    134,
+    240,
+    227,
+    262
+   ],
+   "agama": [
+    134,
+    282,
+    180,
+    304
+   ],
+   "status_perkawinan": [
+    148,
+    306,
+    215,
+    328
+   ],
+   "pekerjaan": [
+    134,
+    330,
+    289,
+    352
+   ],
+   "kewarganegaraan": [
+    145,
+    354,
+    176,
+    376
+   ],
+   "berlaku_hingga": [
+    134,
+    378,
+    246,
+    400
+   ],
+   "foto": [
+    610,
+    100,
+    810,
+    350
+   ]
+  },
+  "perturb": null
+ },
+ {
+  "image": "ktp_007.png",
+  "spec": {
+   "provinsi": "PROVINSI DKI JAKARTA",
+   "kabupaten": "KOTA JAKARTA SELATAN",
+   "nik": "3101120301978297",
+   "nama": "RAHMAT PRATAMA",
+   "ttl_tempat": "JAKARTA SELATAN",
+   "ttl_tanggal": "1997-01-03",
+   "jenis_kelamin": "LAKI-LAKI",
+   "gol_darah": "B",
+   "alamat": "JL. SUDIRMAN NO 83",
+   "rt_rw": "001/008",
+   "kel_desa": "KALIBARU",
+   "kecamatan": "TEBET",
+   "agama": "HINDU",
+   "status_perkawinan": "CERAI MATI",
+   "pekerjaan": "WIRASWASTA",
+   "kewarganegaraan": "WNI",
+   "berlaku_hingga": "SEUMUR HIDUP"
+  },
+  "bboxes": {
+   "nik": [
+    106,
+    56,
+    286,
+    88
+   ],
+   "nama": [
+    134,
+    96,
+    265,
+    118
+   ],
+   "ttl": [
+    136,
+    120,
+    345,
+    142
+   ],
+   "jenis_kelamin": [
+    134,
+    144,
+    203,
+    166
+   ],
+   "gol_darah": [
+    394,
+    144,
+    407,
+    166
+   ],
+   "alamat": [
+    134,
+    168,
+    279,
+    190
+   ],
+   "rt_rw": [
+    134,
+    192,
+    188,
+    214
+   ],
+   "kel_desa": [
+    134,
+    216,
+    207,
+    238
+   ],
+   "kecamatan": [
+    134,
+    240,
+    183,
+    262
+   ],
+   "agama": [
+    134,
+    282,
+    182,
+    304
+   ],
+   "status_perkawinan": [
+    148,
+    306,
+    231,
+    328
+   ],
+   "pekerjaan": [
+    134,
+    330,
+    232,
+    352
+   ],
+   "kewarganegaraan": [
+    145,
+    354,
+    176,
+    376
+   ],
+   "berlaku_hingga": [
+    134,
+    378,
+    246,
+    400
+   ],
+   "foto": [
+    610,
+    100,
+    810,
+    350
+   ]
+  },
+  "perturb": null
+ },
+ {
+  "image": "ktp_008.png",
+  "spec": {
+   "provinsi": "PROVINSI DI YOGYAKARTA",
+   "kabupaten": "KOTA YOGYAKARTA",
+   "nik": "3405015509855473",
+   "nama": "RATNA SANTOSO",
+   "ttl_tempat": "YOGYAKARTA",
+   "ttl_tanggal": "1985-09-15",
+   "jenis_kelamin": "PEREMPUAN",
+   "gol_darah": "-",
+   "alamat": "JL. MERDEKA NO 94",
+   "rt_rw": "007/003",
+   "kel_desa": "KALIBARU",
+   "kecamatan": "GONDOKUSUMAN",
+   "agama": "KONGHUCU",
+   "status_perkawinan": "CERAI MATI",
+   "pekerjaan": "KARYAWAN SWASTA",
+   "kewarganegaraan": "WNI",
+   "berlaku_hingga": "SEUMUR HIDUP"
+  },
+  "bboxes": {
+   "nik": [
+    106,
+    56,
+    288,
+    88
+   ],
+   "nama": [
+    134,
+    96,
+    255,
+    118
+   ],
+   "ttl": [
+    136,
+    120,
+    313,
+    142
+   ],
+   "jenis_kelamin": [
+    134,
+    144,
+    226,
+    166
+   ],
+   "gol_darah": [
+    394,
+    144,
+    402,
+    166
+   ],
+   "alamat": [
+    134,
+    168,
+    273,
+    190
+   ],
+   "rt_rw": [
+    134,
+    192,
+    188,
+    214
+   ],
+   "kel_desa": [
+    134,
+    216,
+    207,
+    238
+   ],
+   "kecamatan": [
+    134,
+    240,
+    260,
+    262
+   ],
+   "agama": [
+    134,
+    282,
+    219,
+    304
+   ],
+   "status_perkawinan": [
+    148,
+    306,
+    231,
+    328
+   ],
+   "pekerjaan": [
+    134,
+    330,
+    277,
+    352
+   ],
+   "kewarganegaraan": [
+    145,
+    354,
+    176,
+    376
+   ],
+   "berlaku_hingga": [
+    134,
+    378,
+    246,
+    400
+   ],
+   "foto": [
+    610,
+    100,
+    810,
+    350
+   ]
+  },
+  "perturb": null
+ },
+ {
+  "image": "ktp_009.png",
+  "spec": {
+   "provinsi": "PROVINSI BALI",
+   "kabupaten": "KOTA DENPASAR",
+   "nik": "5105126708890564",
+   "nama": "SITI PRATAMA",
+   "ttl_tempat": "DENPASAR",
+   "ttl_tanggal": "1989-08-27",
+   "jenis_kelamin": "PEREMPUAN",
+   "gol_darah": "AB",
+   "alamat": "JL. SUDIRMAN NO 42",
+   "rt_rw": "002/004",
+   "kel_desa": "CIBINONG",
+   "kecamatan": "DENPASAR SELATAN",
+   "agama": "ISLAM",
+   "status_perkawinan": "CERAI MATI",
+   "pekerjaan": "PETANI",
+   "kewarganegaraan": "WNI",
+   "berlaku_hingga": "SEUMUR HIDUP"
+  },
+  "bboxes": {
+   "nik": [
+    106,
+    56,
+    288,
+    88
+   ],
+   "nama": [
+    134,
+    96,
+    233,
+    118
+   ],
+   "ttl": [
+    136,
+    120,
+    295,
+    142
+   ],
+   "jenis_kelamin": [
+    134,
+    144,
+    226,
+    166
+   ],
+   "gol_darah": [
+    394,
+    144,
+    416,
+    166
+   ],
+   "alamat": [
+    134,
+    168,
+    279,
+    190
+   ],
+   "rt_rw": [
+    134,
+    192,
+    188,
+    214
+   ],
+   "kel_desa": [
+    134,
+    216,
+    207,
+    238
+   ],
+   "kecamatan": [
+    134,
+    240,
+    279,
+    262
+   ],
+   "agama": [
+    134,
+    282,
+    180,
+    304
+   ],
+   "status_perkawinan": [
+    148,
+    306,
+    231,
+    328
+   ],
+   "pekerjaan": [
+    134,
+    330,
+    187,
+    352
+   ],
+   "kewarganegaraan": [
+    145,
+    354,
+    176,
+    376
+   ],
+   "berlaku_hingga": [
+    134,
+    378,
+    246,
+    400
+   ],
+   "foto": [
+    610,
+    100,
+    810,
+    350
+   ]
+  },
+  "perturb": null
+ },
+ {
+  "image": "ktp_010.png",
+  "spec": {
+   "provinsi": "PROVINSI DI YOGYAKARTA",
+   "kabupaten": "KOTA YOGYAKARTA",
+   "nik": "3402095609001543",
+   "nama": "PUTRI NUGRAHA",
+   "ttl_tempat": "YOGYAKARTA",
+   "ttl_tanggal": "2000-09-16",
+   "jenis_kelamin": "PEREMPUAN",
+   "gol_darah": "-",
+   "alamat": "JL. SUDIRMAN NO 19",
+   "rt_rw": "002/009",
+   "kel_desa": "SUKAMAJU",
+   "kecamatan": "GONDOKUSUMAN",
+   "agama": "BUDDHA",
+   "status_perkawinan": "CERAI MATI",
+   "pekerjaan": "WIRASWASTA",
+   "kewarganegaraan": "WNI",
+   "berlaku_hingga": "SEUMUR HIDUP"
+  },
+  "bboxes": {
+   "nik": [
+    106,
+    56,
+    288,
+    88
+   ],
+   "nama": [
+    134,
+    96,
+    253,
+    118
+   ],
+   "ttl": [
+    136,
+    120,
+    313,
+    142
+   ],
+   "jenis_kelamin": [
+    134,
+    144,
+    226,
+    166
+   ],
+   "gol_darah": [
+    394,
+    144,
+    402,
+    166
+   ],
+   "alamat": [
+    134,
+    168,
+    279,
+    190
+   ],
+   "rt_rw": [
+    134,
+    192,
+    188,
+    214
+   ],
+   "kel_desa": [
+    134,
+    216,
+    214,
+    238
+   ],
+   "kecamatan": [
+    134,
+    240,
+    260,
+    262
+   ],
+   "agama": [
+    134,
+    282,
+    197,
+    304
+   ],
+   "status_perkawinan": [
+    148,
+    306,
+    231,
+    328
+   ],
+   "pekerjaan": [
+    134,
+    330,
+    232,
+    352
+   ],
+   "kewarganegaraan": [
+    145,
+    354,
+    176,
+    376
+   ],
+   "berlaku_hingga": [
+    134,
+    378,
+    246,
+    400
+   ],
+   "foto": [
+    610,
+    100,
+    810,
+    350
+   ]
+  },
+  "perturb": null
+ },
+ {
+  "image": "ktp_011.png",
+  "spec": {
+   "provinsi": "PROVINSI DI YOGYAKARTA",
+   "kabupaten": "KOTA YOGYAKARTA",
+   "nik": "3405051201877541",
+   "nama": "FAJAR NUGRAHA",
+   "ttl_tempat": "YOGYAKARTA",
+   "ttl_tanggal": "1987-01-12",
+   "jenis_kelamin": "LAKI-LAKI",
+   "gol_darah": "O",
+   "alamat": "JL. GAJAH MADA NO 72",
+   "rt_rw": "001/011",
+   "kel_desa": "TEBET",
+   "kecamatan": "GONDOKUSUMAN",
+   "agama": "KRISTEN",
+   "status_perkawinan": "CERAI MATI",
+   "pekerjaan": "PEGAWAI NEGERI SIPIL",
+   "kewarganegaraan": "WNI",
+   "berlaku_hingga": "SEUMUR HIDUP"
+  },
+  "bboxes": {
+   "nik": [
+    106,
+    56,
+    288,
+    88
+   ],
+   "nama": [
+    134,
+    96,
+    255,
+    118
+   ],
+   "ttl": [
+    136,
+    120,
+    313,
+    142
+   ],
+   "jenis_kelamin": [
+    134,
+    144,
+    203,
+    166
+   ],
+   "gol_darah": [
+    394,
+    144,
+    408,
+    166
+   ],
+   "alamat": [
+    134,
+    168,
+    295,
+    190
+   ],
+   "rt_rw": [
+    134,
+    192,
+    187,
+    214
+   ],
+   "kel_desa": [
+    134,
+    216,
+    183,
+    238
+   ],
+   "kecamatan": [
+    134,
+    240,
+    260,
+    262
+   ],
+   "agama": [
+    134,
+    282,
+    198,
+    304
+   ],
+   "status_perkawinan": [
+    148,
+    306,
+    231,
+    328
+   ],
+   "pekerjaan": [
+    134,
+    330,
+    298,
+    352
+   ],
+   "kewarganegaraan": [
+    145,
+    354,
+    176,
+    376
+   ],
+   "berlaku_hingga": [
+    134,
+    378,
+    246,
+    400
+   ],
+   "foto": [
+    610,
+    100,
+    810,
+    350
+   ]
+  },
+  "perturb": null
+ },
+ {
+  "image": "ktp_012.png",
+  "spec": {
+   "provinsi": "PROVINSI JAWA TIMUR",
+   "kabupaten": "KOTA SURABAYA",
+   "nik": "3501052803962134",
+   "nama": "RAHMAT PRATAMA",
+   "ttl_tempat": "SURABAYA",
+   "ttl_tanggal": "1996-03-28",
+   "jenis_kelamin": "LAKI-LAKI",
+   "gol_darah": "B",
+   "alamat": "JL. SUDIRMAN NO 96",
+   "rt_rw": "005/001",
+   "kel_desa": "KALIBARU",
+   "kecamatan": "TAMBAKSARI",
+   "agama": "KRISTEN",
+   "status_perkawinan": "BELUM MENIKAH",
+   "pekerjaan": "PEGAWAI NEGERI SIPIL",
+   "kewarganegaraan": "WNI",
+   "berlaku_hingga": "SEUMUR HIDUP"
+  },
+  "bboxes": {
+   "nik": [
+    106,
+    56,
+    288,
+    88
+   ],
+   "nama": [
+    134,
+    96,
+    265,
+    118
+   ],
+   "ttl": [
+    136,
+    120,
+    293,
+    142
+   ],
+   "jenis_kelamin": [
+    134,
+    144,
+    203,
+    166
+   ],
+   "gol_darah": [
+    394,
+    144,
+    407,
+    166
+   ],
+   "alamat": [
+    134,
+    168,
+    279,
+    190
+   ],
+   "rt_rw": [
+    134,
+    192,
+    188,
+    214
+   ],
+   "kel_desa": [
+    134,
+    216,
+    207,
+    238
+   ],
+   "kecamatan": [
+    134,
+    240,
+    227,
+    262
+   ],
+   "agama": [
+    134,
+    282,
+    198,
+    304
+   ],
+   "status_perkawinan": [
+    148,
+    306,
+    267,
+    328
+   ],
+   "pekerjaan": [
+    134,
+    330,
+    298,
+    352
+   ],
+   "kewarganegaraan": [
+    145,
+    354,
+    176,
+    376
+   ],
+   "berlaku_hingga": [
+    134,
+    378,
+    246,
+    400
+   ],
+   "foto": [
+    610,
+    100,
+    810,
+    350
+   ]
+  },
+  "perturb": null
+ },
+ {
+  "image": "ktp_013.png",
+  "spec": {
+   "provinsi": "PROVINSI JAWA BARAT",
+   "kabupaten": "KAB BEKASI",
+   "nik": "3278126202987646",
+   "nama": "MEGA MAHENDRA",
+   "ttl_tempat": "BEKASI",
+   "ttl_tanggal": "1998-02-22",
+   "jenis_kelamin": "PEREMPUAN",
+   "gol_darah": "O",
+   "alamat": "JL. GAJAH MADA NO 100",
+   "rt_rw": "015/002",
+   "kel_desa": "CIBINONG",
+   "kecamatan": "TARUMAJAYA",
+   "agama": "KRISTEN",
+   "status_perkawinan": "CERAI HIDUP",
+   "pekerjaan": "PEGAWAI NEGERI SIPIL",
+   "kewarganegaraan": "WNI",
+   "berlaku_hingga": "SEUMUR HIDUP"
+  },
+  "bboxes": {
+   "nik": [
+    106,
+    56,
+    288,
+    88
+   ],
+   "nama": [
+    134,
+    96,
+    262,
+    118
+   ],
+   "ttl": [
+    136,
+    120,
+    269,
+    142
+   ],
+   "jenis_kelamin": [
+    134,
+    144,
+    226,
+    166
+   ],
+   "gol_darah": [
+    394,
+    144,
+    408,
+    166
+   ],
+   "alamat": [
+    134,
+    168,
+    302,
+    190
+   ],
+   "rt_rw": [
+    134,
+    192,
+    188,
+    214
+   ],
+   "kel_desa": [
+    134,
+    216,
+    207,
+    238
+   ],
+   "kecamatan": [
+    134,
+    240,
+    229,
+    262
+   ],
+   "agama": [
+    134,
+    282,
+    198,
+    304
+   ],
+   "status_perkawinan": [
+    148,
+    306,
+    242,
+    328
+   ],
+   "pekerjaan": [
+    134,
+    330,
+    298,
+    352
+   ],
+   "kewarganegaraan": [
+    145,
+    354,
+    176,
+    376
+   ],
+   "berlaku_hingga": [
+    134,
+    378,
+    246,
+    400
+   ],
+   "foto": [
+    610,
+    100,
+    810,
+    350
+   ]
+  },
+  "perturb": null
+ },
+ {
+  "image": "ktp_014.png",
+  "spec": {
+   "provinsi": "PROVINSI DKI JAKARTA",
+   "kabupaten": "KOTA JAKARTA SELATAN",
+   "nik": "3101010104046018",
+   "nama": "BUDI NUGRAHA",
+   "ttl_tempat": "JAKARTA SELATAN",
+   "ttl_tanggal": "2004-04-01",
+   "jenis_kelamin": "LAKI-LAKI",
+   "gol_darah": "A",
+   "alamat": "JL. SUDIRMAN NO 44",
+   "rt_rw": "008/012",
+   "kel_desa": "CIBINONG",
+   "kecamatan": "TEBET",
+   "agama": "KATOLIK",
+   "status_perkawinan": "CERAI MATI",
+   "pekerjaan": "PEGAWAI NEGERI SIPIL",
+   "kewarganegaraan": "WNI",
+   "berlaku_hingga": "SEUMUR HIDUP"
+  },
+  "bboxes": {
+   "nik": [
+    106,
+    56,
+    288,
+    88
+   ],
+   "nama": [
+    134,
+    96,
+    245,
+    118
+   ],
+   "ttl": [
+    136,
+    120,
+    345,
+    142
+   ],
+   "jenis_kelamin": [
+    134,
+    144,
+    203,
+    166
+   ],
+   "gol_darah": [
+    394,
+    144,
+    407,
+    166
+   ],
+   "alamat": [
+    134,
+    168,
+    279,
+    190
+   ],
+   "rt_rw": [
+    134,
+    192,
+    188,
+    214
+   ],
+   "kel_desa": [
+    134,
+    216,
+    207,
+    238
+   ],
+   "kecamatan": [
+    134,
+    240,
+    183,
+    262
+   ],
+   "agama": [
+    134,
+    282,
+    195,
+    304
+   ],
+   "status_perkawinan": [
+    148,
+    306,
+    231,
+    328
+   ],
+   "pekerjaan": [
+    134,
+    330,
+    298,
+    352
+   ],
+   "kewarganegaraan": [
+    145,
+    354,
+    176,
+    376
+   ],
+   "berlaku_hingga": [
+    134,
+    378,
+    246,
+    400
+   ],
+   "foto": [
+    610,
+    100,
+    810,
+    350
+   ]
+  },
+  "perturb": null
+ },
+ {
+  "image": "ktp_015.png",
+  "spec": {
+   "provinsi": "PROVINSI JAWA TIMUR",
+   "kabupaten": "KOTA SURABAYA",
+   "nik": "3501095401893645",
+   "nama": "INTAN PRATAMA",
+   "ttl_tempat": "SURABAYA",
+   "ttl_tanggal": "1989-01-14",
+   "jenis_kelamin": "PEREMPUAN",
+   "gol_darah": "AB",
+   "alamat": "JL. SUDIRMAN NO 39",
+   "rt_rw": "014/006",
+   "kel_desa": "MEKARSARI",
+   "kecamatan": "TAMBAKSARI",
+   "agama": "KONGHUCU",
+   "status_perkawinan": "CERAI HIDUP",
+   "pekerjaan": "PELAJAR/MAHASISWA",
+   "kewarganegaraan": "WNI",
+   "berlaku_hingga": "SEUMUR HIDUP"
+  },
+  "bboxes": {
+   "nik": [
+    106,
+    56,
+    288,
+    88
+   ],
+   "nama": [
+    134,
+    96,
+    248,
+    118
+   ],
+   "ttl": [
+    136,
+    120,
+    293,
+    142
+   ],
+   "jenis_kelamin": [
+    134,
+    144,
+    226,
+    166
+   ],
+   "gol_darah": [
+    394,
+    144,
+    416,
+    166
+   ],
+   "alamat": [
+    134,
+    168,
+    279,
+    190
+   ],
+   "rt_rw": [
+    134,
+    192,
+    188,
+    214
+   ],
+   "kel_desa": [
+    134,
+    216,
+    220,
+    238
+   ],
+   "kecamatan": [
+    134,
+    240,
+    227,
+    262
+   ],
+   "agama": [
+    134,
+    282,
+    219,
+    304
+   ],
+   "status_perkawinan": [
+    148,
+    306,
+    242,
+    328
+   ],
+   "pekerjaan": [
+    134,
+    330,
+    289,
+    352
+   ],
+   "kewarganegaraan": [
+    145,
+    354,
+    176,
+    376
+   ],
+   "berlaku_hingga": [
+    134,
+    378,
+    246,
+    400
+   ],
+   "foto": [
+    610,
+    100,
+    810,
+    350
+   ]
+  },
+  "perturb": null
+ },
+ {
+  "image": "ktp_016.png",
+  "spec": {
+   "provinsi": "PROVINSI BALI",
+   "kabupaten": "KOTA DENPASAR",
+   "nik": "5101052312801805",
+   "nama": "FAJAR MAHENDRA",
+   "ttl_tempat": "DENPASAR",
+   "ttl_tanggal": "1980-12-23",
+   "jenis_kelamin": "LAKI-LAKI",
+   "gol_darah": "-",
+   "alamat": "JL. GAJAH MADA NO 50",
+   "rt_rw": "014/012",
+   "kel_desa": "KALIBARU",
+   "kecamatan": "DENPASAR SELATAN",
+   "agama": "KATOLIK",
+   "status_perkawinan": "CERAI HIDUP",
+   "pekerjaan": "GURU",
+   "kewarganegaraan": "WNI",
+   "berlaku_hingga": "SEUMUR HIDUP"
+  },
+  "bboxes": {
+   "nik": [
+    106,
+    56,
+    288,
+    88
+   ],
+   "nama": [
+    134,
+    96,
+    265,
+    118
+   ],
+   "ttl": [
+    136,
+    120,
+    295,
+    142
+   ],
+   "jenis_kelamin": [
+    134,
+    144,
+    203,
+    166
+   ],
+   "gol_darah": [
+    394,
+    144,
+    402,
+    166
+   ],
+   "alamat": [
+    134,
+    168,
+    295,
+    190
+   ],
+   "rt_rw": [
+    134,
+    192,
+    188,
+    214
+   ],
+   "kel_desa": [
+    134,
+    216,
+    207,
+    238
+   ],
+   "kecamatan": [
+    134,
+    240,
+    279,
+    262
+   ],
+   "agama": [
+    134,
+    282,
+    195,
+    304
+   ],
+   "status_perkawinan": [
+    148,
+    306,
+    242,
+    328
+   ],
+   "pekerjaan": [
+    134,
+    330,
+    179,
+    352
+   ],
+   "kewarganegaraan": [
+    145,
+    354,
+    176,
+    376
+   ],
+   "berlaku_hingga": [
+    134,
+    378,
+    246,
+    400
+   ],
+   "foto": [
+    610,
+    100,
+    810,
+    350
+   ]
+  },
+  "perturb": null
+ },
+ {
+  "image": "ktp_017.png",
+  "spec": {
+   "provinsi": "PROVINSI DKI JAKARTA",
+   "kabupaten": "KOTA JAKARTA SELATAN",
+   "nik": "3102122108817861",
+   "nama": "FAJAR PRATAMA",
+   "ttl_tempat": "JAKARTA SELATAN",
+   "ttl_tanggal": "1981-08-21",
+   "jenis_kelamin": "LAKI-LAKI",
+   "gol_darah": "O",
+   "alamat": "JL. SUDIRMAN NO 114",
+   "rt_rw": "005/004",
+   "kel_desa": "CIBINONG",
+   "kecamatan": "TEBET",
+   "agama": "KONGHUCU",
+   "status_perkawinan": "BELUM MENIKAH",
+   "pekerjaan": "PEGAWAI NEGERI SIPIL",
+   "kewarganegaraan": "WNI",
+   "berlaku_hingga": "SEUMUR HIDUP"
+  },
+  "bboxes": {
+   "nik": [
+    106,
+    56,
+    288,
+    88
+   ],
+   "nama": [
+    134,
+    96,
+    251,
+    118
+   ],
+   "ttl": [
+    136,
+    120,
+    345,
+    142
+   ],
+   "jenis_kelamin": [
+    134,
+    144,
+    203,
+    166
+   ],
+   "gol_darah": [
+    394,
+    144,
+    408,
+    166
+   ],
+   "alamat": [
+    134,
+    168,
+    286,
+    190
+   ],
+   "rt_rw": [
+    134,
+    192,
+    188,
+    214
+   ],
+   "kel_desa": [
+    134,
+    216,
+    207,
+    238
+   ],
+   "kecamatan": [
+    134,
+    240,
+    183,
+    262
+   ],
+   "agama": [
+    134,
+    282,
+    219,
+    304
+   ],
+   "status_perkawinan": [
+    148,
+    306,
+    267,
+    328
+   ],
+   "pekerjaan": [
+    134,
+    330,
+    298,
+    352
+   ],
+   "kewarganegaraan": [
+    145,
+    354,
+    176,
+    376
+   ],
+   "berlaku_hingga": [
+    134,
+    378,
+    246,
+    400
+   ],
+   "foto": [
+    610,
+    100,
+    810,
+    350
+   ]
+  },
+  "perturb": null
+ },
+ {
+  "image": "ktp_018.png",
+  "spec": {
+   "provinsi": "PROVINSI JAWA BARAT",
+   "kabupaten": "KAB BEKASI",
+   "nik": "3216091905914278",
+   "nama": "HENDRA RAMADHAN",
+   "ttl_tempat": "BEKASI",
+   "ttl_tanggal": "1991-05-19",
+   "jenis_kelamin": "LAKI-LAKI",
+   "gol_darah": "B",
+   "alamat": "JL. DIPONEGORO NO 53",
+   "rt_rw": "006/005",
+   "kel_desa": "SUKAMAJU",
+   "kecamatan": "TARUMAJAYA",
+   "agama": "KATOLIK",
+   "status_perkawinan": "CERAI HIDUP",
+   "pekerjaan": "PELAJAR/MAHASISWA",
+   "kewarganegaraan": "WNI",
+   "berlaku_hingga": "SEUMUR HIDUP"
+  },
+  "bboxes": {
+   "nik": [
+    106,
+    56,
+    288,
+    88
+   ],
+   "nama": [
+    134,
+    96,
+    280,
+    118
+   ],
+   "ttl": [
+    136,
+    120,
+    269,
+    142
+   ],
+   "jenis_kelamin": [
+    134,
+    144,
+    203,
+    166
+   ],
+   "gol_darah": [
+    394,
+    144,
+    407,
+    166
+   ],
+   "alamat": [
+    134,
+    168,
+    301,
+    190
+   ],
+   "rt_rw": [
+    134,
+    192,
+    188,
+    214
+   ],
+   "kel_desa": [
+    134,
+    216,
+    214,
+    238
+   ],
+   "kecamatan": [
+    134,
+    240,
+    229,
+    262
+   ],
+   "agama": [
+    134,
+    282,
+    195,
+    304
+   ],
+   "status_perkawinan": [
+    148,
+    306,
+    242,
+    328
+   ],
+   "pekerjaan": [
+    134,
+    330,
+    289,
+    352
+   ],
+   "kewarganegaraan": [
+    145,
+    354,
+    176,
+    376
+   ],
+   "berlaku_hingga": [
+    134,
+    378,
+    246,
+    400
+   ],
+   "foto": [
+    610,
+    100,
+    810,
+    350
+   ]
+  },
+  "perturb": null
+ },
+ {
+  "image": "ktp_019.png",
+  "spec": {
+   "provinsi": "PROVINSI DKI JAKARTA",
+   "kabupaten": "KOTA JAKARTA SELATAN",
+   "nik": "3101050103931229",
+   "nama": "AGUS RAMADHAN",
+   "ttl_tempat": "JAKARTA SELATAN",
+   "ttl_tanggal": "1993-03-01",
+   "jenis_kelamin": "LAKI-LAKI",
+   "gol_darah": "O",
+   "alamat": "JL. KARTINI NO 41",
+   "rt_rw": "008/010",
+   "kel_desa": "KALIBARU",
+   "kecamatan": "TEBET",
+   "agama": "HINDU",
+   "status_perkawinan": "MENIKAH",
+   "pekerjaan": "KARYAWAN SWASTA",
+   "kewarganegaraan": "WNI",
+   "berlaku_hingga": "SEUMUR HIDUP"
+  },
+  "bboxes": {
+   "nik": [
+    106,
+    56,
+    288,
+    88
+   ],
+   "nama": [
+    134,
+    96,
+    261,
+    118
+   ],
+   "ttl": [
+    136,
+    120,
+    345,
+    142
+   ],
+   "jenis_kelamin": [
+    134,
+    144,
+    203,
+    166
+   ],
+   "gol_darah": [
+    394,
+    144,
+    408,
+    166
+   ],
+   "alamat": [
+    134,
+    168,
+    259,
+    190
+   ],
+   "rt_rw": [
+    134,
+    192,
+    188,
+    214
+   ],
+   "kel_desa": [
+    134,
+    216,
+    207,
+    238
+   ],
+   "kecamatan": [
+    134,
+    240,
+    183,
+    262
+   ],
+   "agama": [
+    134,
+    282,
+    182,
+    304
+   ],
+   "status_perkawinan": [
+    148,
+    306,
+    215,
+    328
+   ],
+   "pekerjaan": [
+    134,
+    330,
+    277,
+    352
+   ],
+   "kewarganegaraan": [
+    145,
+    354,
+    176,
+    376
+   ],
+   "berlaku_hingga": [
+    134,
+    378,
+    246,
+    400
+   ],
+   "foto": [
+    610,
+    100,
+    810,
+    350
+   ]
+  },
+  "perturb": null
+ },
+ {
+  "image": "ktp_blur.png",
+  "spec": {
+   "provinsi": "PROVINSI JAWA BARAT",
+   "kabupaten": "KAB BEKASI",
+   "nik": "3278052607036136",
+   "nama": "AGUS ANGGRAINI",
+   "ttl_tempat": "BEKASI",
+   "ttl_tanggal": "2003-07-26",
+   "jenis_kelamin": "LAKI-LAKI",
+   "gol_darah": "B",
+   "alamat": "JL. KARTINI NO 78",
+   "rt_rw": "015/001",
+   "kel_desa": "SUKAMAJU",
+   "kecamatan": "TARUMAJAYA",
+   "agama": "KONGHUCU",
+   "status_perkawinan": "CERAI MATI",
+   "pekerjaan": "GURU",
+   "kewarganegaraan": "WNI",
+   "berlaku_hingga": "SEUMUR HIDUP"
+  },
+  "bboxes": {},
+  "perturb": "blur"
+ },
+ {
+  "image": "ktp_glare.png",
+  "spec": {
+   "provinsi": "PROVINSI BALI",
+   "kabupaten": "KOTA DENPASAR",
+   "nik": "5105120508831527",
+   "nama": "RAHMAT NUGRAHA",
+   "ttl_tempat": "DENPASAR",
+   "ttl_tanggal": "1983-08-05",
+   "jenis_kelamin": "LAKI-LAKI",
+   "gol_darah": "-",
+   "alamat": "JL. DIPONEGORO NO 66",
+   "rt_rw": "001/004",
+   "kel_desa": "MEKARSARI",
+   "kecamatan": "DENPASAR SELATAN",
+   "agama": "ISLAM",
+   "status_perkawinan": "CERAI MATI",
+   "pekerjaan": "PELAJAR/MAHASISWA",
+   "kewarganegaraan": "WNI",
+   "berlaku_hingga": "SEUMUR HIDUP"
+  },
+  "bboxes": {},
+  "perturb": "glare"
+ },
+ {
+  "image": "ktp_skew.png",
+  "spec": {
+   "provinsi": "PROVINSI DI YOGYAKARTA",
+   "kabupaten": "KOTA YOGYAKARTA",
+   "nik": "3402125308921083",
+   "nama": "AYU SETIAWAN",
+   "ttl_tempat": "YOGYAKARTA",
+   "ttl_tanggal": "1992-08-13",
+   "jenis_kelamin": "PEREMPUAN",
+   "gol_darah": "A",
+   "alamat": "JL. GAJAH MADA NO 65",
+   "rt_rw": "002/015",
+   "kel_desa": "CIBINONG",
+   "kecamatan": "GONDOKUSUMAN",
+   "agama": "KATOLIK",
+   "status_perkawinan": "BELUM MENIKAH",
+   "pekerjaan": "GURU",
+   "kewarganegaraan": "WNI",
+   "berlaku_hingga": "SEUMUR HIDUP"
+  },
+  "bboxes": {},
+  "perturb": "skew"
+ }
+]

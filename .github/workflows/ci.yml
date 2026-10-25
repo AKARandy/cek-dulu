@@ -1,0 +1,28 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install ruff pytest httpx pillow numpy
+      - run: ruff check .
+      - run: python scripts/generate_golden.py
+      - run: pytest -q
+      - name: unit tests cover the weight-free surface
+        run: pytest -q -m "not models" --tb=short
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t cek-dulu:ci .

@@ -1,0 +1,26 @@
+# cek-dulu runtime (pins verified together on Windows + Python 3.12, CPU)
+# torch MUST come from the CPU index:
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+numpy==1.26.4            # paddle 2.6 ABI requires numpy 1.x
+scipy==1.12.0
+scikit-image==0.22.0
+opencv-python-headless==4.9.0.80
+pandas==2.2.2
+contourpy==1.2.1
+
+fastapi>=0.115
+uvicorn[standard]>=0.30
+python-multipart>=0.0.9
+pydantic>=2.7
+pillow>=10.3
+
+torch>=2.2
+transformers==4.49.0     # Florence-2 remote code breaks on >=4.50
+einops
+timm
+
+paddlepaddle==2.6.2      # 3.x has a oneDNN CPU bug; 2.7.3 paddleocr pairs with this
+paddleocr==2.7.3
+
+onnxruntime>=1.17
+gradio>=4.44
