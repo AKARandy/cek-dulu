@@ -253,6 +253,8 @@ def assign_fields(lines: list[dict], *, shear: float = 0.0) -> dict[str, list[in
             "RTRW": "rt_rw",
             "KEL/D": "kel_desa",
             "KELDE": "kel_desa",
+            "KE/D": "kel_desa",
+            "KEDE": "kel_desa",
             "KECAM": "kecamatan",
             "AGAMA": "agama",
             "STATU": "status_perkawinan",
@@ -320,20 +322,86 @@ def assign_fields(lines: list[dict], *, shear: float = 0.0) -> dict[str, list[in
     ]
     value_idx.sort(key=lambda i: lines[i]["bbox"][1])
 
-    # --- Sequence alignment: k-th value -> k-th label ---
+    # --- Content pinning: some values identify their own field ---
+    # PEREMPUAN is always the gender, ISLAM always the religion, WNI always
+    # the nationality, SEUMUR HIDUP always the validity, 004/003 always the
+    # RT/RW. Pinning them by vocabulary makes the assignment immune to the
+    # off-by-one drift that pure sequence alignment suffers when one value
+    # lands out of y-order on a tilted card.
+    vocab = {
+        "jenis_kelamin": ("LAKI-LAKI", "LAKILAKI", "PEREMPUAN"),
+        "agama": ("ISLAM", "KRISTEN", "KATOLIK", "HINDU", "BUDDHA", "KONGHUCU"),
+        "status_perkawinan": (
+            "BELUM MENIKAH",
+            "BELUMKAWIN",
+            "KAWIN",
+            "CERAI HIDUP",
+            "CERAIMATI",
+        ),
+        "kewarganegaraan": ("WNI", "WNA"),
+        "berlaku_hingga": ("SEUMUR HIDUP",),
+    }
+    rt_rw_re = re.compile(r"^\d{1,3}\s*/\s*\d{1,3}$")
+    import difflib
+
+    def vocab_match(up: str, words: tuple[str, ...]) -> str | None:
+        """Exact match first; one-glyph OCR noise tolerated for long words
+        (FEREMPUAN still pins PEREMPUAN)."""
+        normed = {re.sub(r"[^A-Z/]", "", w): w for w in words}
+        if up in normed:
+            return normed[up]
+        for n, w in normed.items():
+            if len(n) >= 6 and difflib.SequenceMatcher(None, up, n).ratio() >= 0.84:
+                return w
+        return None
+
+    def pin(key: str, i: int) -> None:
+        boxes[key] = lines[i]["bbox"]
+        used.add(i)
+        if i in value_idx:
+            value_idx.remove(i)
+
+    # Merged label+value lines ('Status Perkawinan:BELUM KAWIN') carry their
+    # value INSIDE the label line: pin the field from the embedded suffix.
+    for key, li in list(label_line_of_key.items()):
+        if key in boxes or key not in vocab:
+            continue
+        n = norm_text(lines[li]["text"])
+        for word in vocab[key]:
+            w = re.sub(r"[^A-Z/]", "", word)
+            if n.endswith(w):
+                pin(key, li)
+                break
+
+    for i in list(value_idx):
+        up = re.sub(r"[^A-Z/]", "", lines[i]["text"].upper())
+        for key, words in vocab.items():
+            if key in boxes:
+                continue
+            if vocab_match(up, words):
+                boxes[key] = lines[i]["bbox"]
+                used.add(i)
+                value_idx.remove(i)
+                break
+        else:
+            if "rt_rw" not in boxes and rt_rw_re.match(lines[i]["text"].strip()):
+                boxes["rt_rw"] = lines[i]["bbox"]
+                used.add(i)
+                value_idx.remove(i)
+            elif "berlaku_hingga" not in boxes and re.match(
+                r"^\d{2}-\d{2}-\d{4}$", lines[i]["text"].strip()
+            ):
+                boxes["berlaku_hingga"] = lines[i]["bbox"]
+                used.add(i)
+                value_idx.remove(i)
+
+    # --- Sequence alignment: k-th value -> k-th label (remaining fields) ---
+    ordered_keys = [k for k in ordered_keys if k not in boxes]
     for k, key in enumerate(ordered_keys):
         if k < len(value_idx):
             vi = value_idx[k]
             boxes[key] = lines[vi]["bbox"]
             used.add(vi)
-
-    # --- Gender: a line that IS a gender word (label may be mangled) ---
-    if "jenis_kelamin" not in boxes:
-        for i, ln in enumerate(lines):
-            if i not in used and any(g in ln["text"].upper() for g in GENDER_WORDS):
-                boxes["jenis_kelamin"] = ln["bbox"]
-                used.add(i)
-                break
 
     # --- Fallback: synthetic-geometry priors for unclaimed fields ---
     for row_key, expected_y in LEFT_ROWS.items():
