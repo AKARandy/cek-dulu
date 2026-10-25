@@ -12,7 +12,10 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu \
+# torch AND torchvision together from the CPU index: timm (Florence-2 remote
+# code) imports torchvision, and a mismatched torchvision breaks with
+# "operator torchvision::nms does not exist".
+RUN pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu \
     && pip install --no-cache-dir -r requirements.txt
 
 COPY app ./app
