@@ -91,13 +91,34 @@ def run(
         return result
 
     # Hard QA failures (anything but skew) reject immediately. A skew-only
-    # failure is provisional: the projection-profile estimator is fooled by
-    # guilloche texture, so the model path re-verifies tilt against the OCR
-    # line boxes (the text rows themselves) before deciding.
+    # failure is provisional: on the canonical canvas the projection profile
+    # reads the true residual tilt, so the model path rotates by exactly that
+    # amount, re-runs QA, and adopts the flatter image.
     if not qa.ok and any(c.name != "skew" for c in qa.checks if not c.passed):
         return _reject()
     if not qa.ok and gold_entry is not None:
         return _reject()  # gold cards are canonical renders: skew fail is real
+    if not qa.ok:
+        _skew_val = next(c.value for c in qa.checks if c.name == "skew" and not c.passed)
+        from PIL import Image as _Img
+
+        _img = _Img.open(image_path).convert("RGB")
+        # estimate_skew returns the CORRECTION angle: rotate BY it.
+        _rotated = _img.rotate(
+            _skew_val, resample=_Img.BICUBIC, expand=False, fillcolor=(228, 228, 228)
+        )
+        _retry_path = workdir / "deskewed.png"
+        _rotated.save(_retry_path)
+        _qa2 = check_document(_retry_path)
+        if _qa2.ok or (
+            _qa2.ok is False
+            and next((c.value for c in _qa2.checks if c.name == "skew"), 99) < abs(_skew_val)
+        ):
+            image_path, qa = _retry_path, _qa2
+            result["preprocess"]["deskew_retry"] = round(_skew_val, 2)
+            result["qa"] = asdict(qa)
+    if not qa.ok:
+        return _reject()
 
     # --- boxes + text: gold (generator truth) or model path ---
     if gold_entry is not None:
@@ -109,31 +130,28 @@ def run(
                 for k, v in boxes.items()
             }
     else:
-        from app.detect import assign_fields, ground_photo_box, ocr_lines
+        from app.detect import assign_fields, ground_photo_box, ocr_lines, photo_box_from_lines
 
         lines = ocr_lines(image_path)
 
-        # Text rows are the referee: if they still tilt after preprocessing,
-        # rotate by the measured slope and re-OCR once. Bounded to one retry.
-        ls0 = line_skew_deg(lines)
-        if ls0 is not None and abs(ls0) > 1.2:
-            from PIL import Image as _Img
-
-            img = _Img.open(image_path).convert("RGB")
-            img = img.rotate(ls0, resample=_Img.BICUBIC, expand=False, fillcolor=(228, 228, 228))
-            corrected = workdir / "deskewed.png"
-            img.save(corrected)
-            re_lines = ocr_lines(corrected)
-            if line_skew_deg(re_lines) is not None and abs(line_skew_deg(re_lines)) < abs(ls0):
-                image_path = corrected
-                lines = re_lines
-
-        # NIK refine: small fonts on guilloche misread at full-image scale;
-        # crop the NIK row, upscale, and re-OCR just that strip.
         def refine_nik(lns: list[dict]) -> list[dict]:
-            import re as _re
+            """Arbitrate the NIK reading.
 
-            from PIL import Image as _Img
+            Candidates: the full-image read plus per-position-majority votes
+            over multiple enhancement variants (scale x3/x5, grayscale
+            autocontrast, sharpening) of an upscaled NIK-row crop. The winner
+            is the candidate whose decoded birth date matches a date printed
+            on the card (the NIK encodes the TTL date by law). With no date
+            evidence the full 16-digit read stands, and any contradiction
+            surfaces later as a validation issue.
+            """
+            import re as _re
+            from collections import Counter
+
+            from PIL import Image, ImageFilter, ImageOps
+
+            from app.parse_fields import parse_ttl_date
+            from validators.nik import validate_nik
 
             cand = [
                 ln
@@ -142,9 +160,29 @@ def run(
             ]
             if not cand:
                 return lns
-            box = min(cand, key=lambda ln: ln["bbox"][1])["bbox"]
-            img = _Img.open(image_path).convert("RGB")
-            pad = 6
+            target = min(cand, key=lambda ln: ln["bbox"][1])
+
+            def digits_of(s: str) -> str:
+                return _re.sub(r"\D", "", s)
+
+            full_digits = digits_of(target["text"])[:16]
+            card_dates = [d for ln in lns if (d := parse_ttl_date(ln["text"]))]
+
+            def score(nik16: str) -> int:
+                check = validate_nik(nik16)
+                if not check.ok or check.birth_date is None:
+                    return 0
+                if card_dates and check.birth_date in card_dates:
+                    return 2  # decodes to a date printed on the card
+                if not card_dates:
+                    return 1
+                return 0  # contradicts every printed date
+
+            candidates = [full_digits] if len(full_digits) >= 16 else []
+
+            box = target["bbox"]
+            img = Image.open(image_path).convert("RGB")
+            pad = 8
             crop = img.crop(
                 (
                     max(0, box[0] - pad),
@@ -153,53 +191,46 @@ def run(
                     min(img.height, box[3] + pad),
                 )
             )
-            crop = crop.resize((crop.width * 3, crop.height * 3), _Img.LANCZOS)
-            strip = workdir / "nik_strip.png"
-            crop.save(strip)
-            strip_lines = ocr_lines(strip)
-            best = ""
-            for sl in strip_lines:
-                digits = _re.sub(r"\D", "", sl["text"])
-                if len(digits) > len(best):
-                    best = digits
-            if len(best) >= 16:
-                nik16 = best[:16]
-                for ln in lns:
-                    if ln is cand[0]:
-                        ln["text"] = nik16
-                        ln["conf"] = max(ln["conf"], 0.95)
-                        break
+            variant_reads: list[str] = []
+            vi = 0
+            for scale in (3, 5):
+                big = crop.resize((crop.width * scale, crop.height * scale), Image.LANCZOS)
+                for im in (
+                    big,
+                    ImageOps.autocontrast(big.convert("L")).convert("RGB"),
+                    big.filter(ImageFilter.SHARPEN),
+                ):
+                    vp = workdir / f"nik_strip_{vi}.png"
+                    vi += 1
+                    im.save(vp)
+                    for sl in ocr_lines(vp):
+                        d16 = digits_of(sl["text"])[:16]
+                        if len(d16) == 16 and d16 not in variant_reads:
+                            variant_reads.append(d16)
+            if len(variant_reads) >= 3:
+                voted = "".join(
+                    Counter(pos).most_common(1)[0][0] for pos in zip(*variant_reads, strict=False)
+                )
+                if len(voted) == 16 and validate_nik(voted).ok:
+                    candidates.append(voted)
+            for d16 in variant_reads:
+                if d16 not in candidates:
+                    candidates.append(d16)
+
+            if not candidates:
+                return lns
+            best = max(candidates, key=score)
+            if score(best) == 0 and len(full_digits) >= 16:
+                best = full_digits  # no evidence against it: keep the full read
+            if len(best) == 16 and best != digits_of(target["text"]):
+                target["text"] = best
+                target["conf"] = max(target["conf"], 0.95)
             return lns
 
         lines = refine_nik(lines)
         by_bbox = {tuple(ln["bbox"]): ln for ln in lines}
 
-        # Text-based skew verdict: the projection-profile estimator can be
-        # fooled by guilloche texture. The OCR line boxes ARE the text rows,
-        # so their slope is the ground truth for tilt.
-        if not result["qa"]["ok"] and all(
-            c["name"] == "skew" for c in result["qa"]["checks"] if not c["passed"]
-        ):
-            ls = line_skew_deg(lines)
-            if ls is not None and abs(ls) <= 4.0:
-                for c in result["qa"]["checks"]:
-                    if c["name"] == "skew":
-                        c["passed"] = True
-                        c["note"] = f"texture estimate overruled by OCR-line slope {ls:.1f} deg"
-                result["qa"]["ok"] = True
-                result["qa"]["reasons"] = []
-            else:
-                return _reject()  # text rows genuinely tilt: real rejection
-
-        import math as _math
-        import statistics as _stats
-
-        _angles = [ln.get("angle", 0.0) for ln in lines if abs(ln.get("angle", 0.0)) < 15]
-        _tilt = _stats.median(_angles) if _angles else 0.0
-        _shear = _math.tan(_math.radians(_tilt))
-        from app.detect import photo_box_from_lines
-
-        boxes = assign_fields(lines, shear=_shear)
+        boxes = assign_fields(lines)
         photo, photo_source = ground_photo_box(image_path)
         if photo_source == "layout_prior":
             adaptive = photo_box_from_lines(lines)

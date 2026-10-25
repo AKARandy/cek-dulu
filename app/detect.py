@@ -96,9 +96,7 @@ def photo_box_from_lines(lines: list[dict]) -> list[int] | None:
     ys = list(range(70, 470, 5))
     free = []
     for y in ys:
-        blocked = any(
-            ln["bbox"][2] > 560 and ln["bbox"][1] <= y <= ln["bbox"][3] for ln in lines
-        )
+        blocked = any(ln["bbox"][2] > 560 and ln["bbox"][1] <= y <= ln["bbox"][3] for ln in lines)
         free.append(0 if blocked else 1)
     best_len, best_start, run = 0, 0, 0
     for i, f in enumerate(free):
@@ -219,13 +217,14 @@ def ocr_lines(image_path: str | Path) -> list[dict]:
 
 
 def assign_fields(lines: list[dict], *, shear: float = 0.0) -> dict[str, list[int]]:
-    """Map OCR lines to field keys.
+    """Map OCR lines to field keys by SEQUENCE ALIGNMENT.
 
-    Content first, geometry second: real cards and synthetic renders sit at
-    different absolute positions, but every Indonesian KTP prints the same
-    labels. Values live in their own column; labels pair to values by a
-    greedy one-to-one nearest-row match, which survives baseline offsets and
-    dense row spacing where a fixed tolerance collides across rows.
+    Every Indonesian KTP prints the same labels in the same order, and the
+    values sit in their own column in the same order - interleaved with the
+    next label on dense or tilted cards, which defeats proximity pairing.
+    So: claim labels by anchor matching, collect value-column lines, sort
+    both by y, and pair the k-th value with the k-th label (canonical field
+    order). Geometry priors remain only as a last-resort fallback.
     """
     boxes: dict[str, list[int]] = {}
     used: set[int] = set()
@@ -236,20 +235,15 @@ def assign_fields(lines: list[dict], *, shear: float = 0.0) -> dict[str, list[in
     def center_y(bbox: list[int]) -> float:
         return (bbox[1] + bbox[3]) / 2
 
-    def level_y(ln: dict) -> float:
-        """Row center in shear-leveled coordinates.
-
-        On a tilted card the value column (larger x) sits systematically
-        lower than the label column; subtracting shear*x_mid flattens the
-        rows so label-value gaps become small and uniform.
-        """
-        return center_y(ln["bbox"]) - shear * (ln["bbox"][0] + ln["bbox"][2]) / 2
-
-    header_prefixes = ("PROVINSI", "KABUPATEN", "KOTA", "REPUBLIK", "INDONESIA")
+    header_prefixes = (
+        "PROVINS",
+        "KABUPATEN",
+        "KOTA",
+        "REPUBLIK",
+        "INDONESIA",
+    )  # PROVINS: survives I/L OCR confusion
     label_to_key = {re.sub(r"[^A-Z0-9/]", "", v.upper()): k for k, v in ROW_LABELS.items()}
-    # Prefix anchors survive OCR mangling ("Tempatagahir", "Alamal", "RURW").
-    # Longest first so KECAMATAN wins over KEL/DESA-style prefixes.
-    anchor_to_key = sorted(
+    anchors = sorted(
         {
             "NAMA": "nama",
             "TEMPA": "ttl",
@@ -265,10 +259,20 @@ def assign_fields(lines: list[dict], *, shear: float = 0.0) -> dict[str, list[in
             "PEKER": "pekerjaan",
             "KEWAR": "kewarganegaraan",
             "BERLA": "berlaku_hingga",
-            "GOL": "gol_darah_label",
         }.items(),
         key=lambda kv: -len(kv[0]),
     )
+    canonical_order = {k: i for i, k in enumerate(ROW_LABELS)}
+
+    def anchor_key(text: str) -> str | None:
+        n = norm_text(text)
+        for label, key in sorted(label_to_key.items(), key=lambda L: -len(L)):
+            if n == label or n.startswith(label):
+                return key
+        for anchor, key in anchors:
+            if len(n) >= 4 and (n.startswith(anchor) or (anchor.startswith(n) and len(n) >= 5)):
+                return None if key == "gol_darah_label" else key
+        return None
 
     def classify(ln: dict) -> str:
         n = norm_text(ln["text"])
@@ -276,12 +280,10 @@ def assign_fields(lines: list[dict], *, shear: float = 0.0) -> dict[str, list[in
             return "empty"
         if any(n.startswith(h) for h in header_prefixes):
             return "header"
-        for label in label_to_key:
-            if n == label or n.startswith(label):
-                return "label"
-        for anchor, _key in anchor_to_key:
-            if len(n) >= 4 and (n.startswith(anchor) or anchor.startswith(n) and len(n) >= 5):
-                return "label"
+        if anchor_key(ln["text"]) is not None:
+            return "label"
+        if n.startswith("GOL"):
+            return "label"  # Gol.Darah label: handled by side-pairing
         return "value"
 
     # --- NIK: 16 digits anywhere; prefer the upper half ---
@@ -294,76 +296,38 @@ def assign_fields(lines: list[dict], *, shear: float = 0.0) -> dict[str, list[in
         boxes["nik"] = chosen["bbox"]
         used.add(lines.index(chosen))
 
-    # --- Classify every line ---
     roles = [classify(ln) for ln in lines]
 
-    def anchor_key(text: str) -> str | None:
-        n = norm_text(text)
-        for label, key in sorted(label_to_key.items(), key=lambda L: -len(L)):
-            if n == label or n.startswith(label):
-                return key
-        for anchor, key in anchor_to_key:
-            if len(n) >= 4 and (n.startswith(anchor) or (anchor.startswith(n) and len(n) >= 5)):
-                return None if key == "gol_darah_label" else key
-        return None
-
+    # --- Labels: claim by anchor, order by canonical field order ---
     label_line_of_key: dict[str, int] = {}
     for i, (ln, role) in enumerate(zip(lines, roles, strict=False)):
         if role != "label" or i in used:
             continue
         key = anchor_key(ln["text"])
-        if key and key not in boxes and key not in label_line_of_key:
+        if key and key not in label_line_of_key:
             label_line_of_key[key] = i
-            boxes[key] = ln["bbox"]  # provisional: the label row itself
+    ordered_keys = sorted(label_line_of_key, key=lambda k: canonical_order.get(k, 99))
 
-    # --- Greedy one-to-one pairing: labels to value-column lines by row ---
+    # --- Values: right of the label column, top to bottom ---
+    label_xs = [lines[i]["bbox"][0] for i in label_line_of_key.values()]
+    import statistics as _stats
+
+    label_x = _stats.median(label_xs) if label_xs else 60.0
     value_idx = [
         i
         for i, (ln, role) in enumerate(zip(lines, roles, strict=False))
-        if role == "value" and i not in used and 100 <= ln["bbox"][0] <= 430
+        if role == "value" and i not in used and label_x + 40 <= ln["bbox"][0] <= 430
     ]
-    # Pair labels to values in shear-leveled coordinates: a value belongs to
-    # the label whose leveled row is nearest ABOVE it (small positive gap =
-    # the usual baseline offset). Greedy on smallest gap keeps it one-to-one.
-    claimed: set[str] = set()
-    assignments: list[tuple[float, str, int]] = []
-    for vi in value_idx:
-        vy = level_y(lines[vi])
-        best_gap, best_key = None, None
-        for key, li in label_line_of_key.items():
-            if key in claimed:
-                continue
-            gap = vy - level_y(lines[li])
-            if -3 <= gap <= 20 and (best_gap is None or gap < best_gap):
-                best_gap, best_key = gap, key
-        if best_key is not None:
-            assignments.append((best_gap, best_key, vi))
-    assignments.sort(key=lambda t: t[0])
-    for _gap, key, vi in assignments:
-        if key in claimed or vi in used:
-            continue
-        boxes[key] = lines[vi]["bbox"]
-        used.add(vi)
-        claimed.add(key)
+    value_idx.sort(key=lambda i: lines[i]["bbox"][1])
 
-    # --- Row-band boxes for label-only fields (no value paired) ---
-    # An unpaired field otherwise displays its far-left LABEL box; span the
-    # whole row instead so overlays and redaction cover the likely value.
-    if value_idx:
-        heights = [
-            lines[i]["bbox"][3] - lines[i]["bbox"][1] for i in value_idx
-        ]
-        heights.sort()
-        band_h = heights[len(heights) // 2] + 8
-    else:
-        band_h = 22
-    for key, li in label_line_of_key.items():
-        if key in claimed:
-            continue
-        lab = lines[li]["bbox"]
-        boxes[key] = [lab[0], lab[1], 560, min(539, lab[1] + band_h)]
+    # --- Sequence alignment: k-th value -> k-th label ---
+    for k, key in enumerate(ordered_keys):
+        if k < len(value_idx):
+            vi = value_idx[k]
+            boxes[key] = lines[vi]["bbox"]
+            used.add(vi)
 
-    # --- Gender: a line that IS a gender word ---
+    # --- Gender: a line that IS a gender word (label may be mangled) ---
     if "jenis_kelamin" not in boxes:
         for i, ln in enumerate(lines):
             if i not in used and any(g in ln["text"].upper() for g in GENDER_WORDS):
@@ -393,7 +357,7 @@ def assign_fields(lines: list[dict], *, shear: float = 0.0) -> dict[str, list[in
         for i, ln in enumerate(lines):
             if i in used:
                 continue
-            if abs(center_y(ln["bbox"]) - jk_y) <= 14 and len(ln["text"].strip()) <= 4:
+            if abs(center_y(ln["bbox"]) - jk_y) <= 16 and len(ln["text"].strip()) <= 4:
                 dx = ln["bbox"][0] - boxes["jenis_kelamin"][2]
                 if 0 <= dx < best_dx:
                     best, best_dx = ln, dx

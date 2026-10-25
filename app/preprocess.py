@@ -1,18 +1,14 @@
 """Real-photo preprocessing: find the card, flatten it, fix the exposure.
 
-Real captures arrive rotated, perspective-tilted, underexposed, and tinted.
-The rest of the pipeline (QA gates, OCR, layout priors) assumes the
-canonical 850x540 geometry, so this module warps whatever it sees onto that
-canvas and normalizes lighting. Three strategies, first match wins:
+Order matters and is deliberate:
+1. Photometric fix FIRST - better contrast improves every later stage.
+2. Fine-rotate the RAW capture (expand=True: the raw frame has margins, so
+   nothing is cropped and no fill wedges appear).
+3. THEN detect the card quad and perspective-warp it onto the canonical
+   canvas. The warp re-rectifies residual tilt, so rotations never stack.
 
-1. Contour quad: the card is the largest 4-corner shape in the frame.
-2. Aspect fallback: the card already fills the frame (edge-cropped render
-   or scan); just resize to canonical.
-3. Passthrough: nothing confident found; run downstream on the original
-   (the QA gates will reject garbage loudly rather than silently).
-
-Photometric fix: mild CLAHE on the L channel (LAB), applied only when the
-image is dim or low-contrast. Conservative by design.
+Rotating AFTER the warp is what produced rotated canvases with gray wedges;
+that order is gone on purpose.
 """
 
 from __future__ import annotations
@@ -28,8 +24,9 @@ CANON_W, CANON_H = 850, 540
 
 @dataclass
 class PreprocessReport:
-    method: str  # "quad_warp" | "aspect_resize" | "passthrough" | "passthrough_dim"
-    rotated_by: float = 0.0  # extra fine rotation applied after warp (degrees)
+    # "quad_warp" | "aspect_resize" | "aspect_resize_cropped" | "passthrough" | "passthrough_dim"
+    method: str
+    rotated_by: float = 0.0  # pre-warp fine rotation (degrees)
     photometric: bool = False
 
     def as_dict(self) -> dict:
@@ -56,8 +53,21 @@ def _quad_area(quad: np.ndarray) -> float:
     return float(0.5 * abs(np.dot(x, np.roll(y, -1)) - np.dot(y, np.roll(x, -1))))
 
 
+def _quad_is_cardlike(quad: np.ndarray) -> bool:
+    """Reject contours that are not roughly a rectangle (angle sanity)."""
+    c = quad.reshape(-1, 2).astype(np.float64)
+    sides = [c[(i + 1) % 4] - c[i] for i in range(4)]
+    angles = []
+    for i in range(4):
+        a, b = sides[i], sides[(i + 1) % 4]
+        cos = float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b) + 1e-6))
+        angles.append(abs(np.degrees(np.arccos(max(-1.0, min(1.0, cos))))))
+    # interior angles of a rectangle are ~90 deg; allow generous warp
+    return all(60 <= a <= 120 for a in angles)
+
+
 def _find_card_quad(img: Image.Image) -> np.ndarray | None:
-    """Largest plausible 4-corner contour, or None.
+    """Largest plausible card-shaped 4-corner contour, or None.
 
     Tries plain edges first, then a CLAHE-boosted pass: dim captures with
     dark backgrounds yield no usable Canny edges until the contrast is
@@ -81,9 +91,12 @@ def _find_card_quad(img: Image.Image) -> np.ndarray | None:
                 break
             peri = cv2.arcLength(c, True)
             approx = cv2.approxPolyDP(c, 0.02 * peri, True)
-            if len(approx) == 4 and cv2.isContourConvex(approx) and area > best_area:
-                best_area, best = area, approx
-        return None if best is None else _order_corners(best.reshape(4, 2).astype(np.float32))
+            if len(approx) != 4 or not cv2.isContourConvex(approx):
+                continue
+            quad = _order_corners(approx.reshape(4, 2).astype(np.float32))
+            if area > best_area and _quad_is_cardlike(quad):
+                best_area, best = area, quad
+        return best
 
     quad = _quad_from(gray)
     if quad is not None:
@@ -124,14 +137,20 @@ def _warp_to_canonical(img: Image.Image, quad: np.ndarray) -> Image.Image:
 
 
 def _fine_rotate(img: Image.Image) -> tuple[Image.Image, float]:
-    """Kill residual 1-5 degree tilt using the row-projection trick (2 passes)."""
+    """Kill tilt on the RAW capture, expanding the canvas so nothing is lost.
+
+    Only meaningful before the warp: the warp re-rectifies whatever tilt
+    remains, and in-place rotation after the warp just shoves gray wedges
+    into the corners.
+    """
     from app.qa import estimate_skew
 
     total = 0.0
     for _ in range(2):
         skew = estimate_skew(img)
-        if 0.6 <= abs(skew) <= 6.0:
-            img = img.rotate(-skew, resample=Image.BICUBIC, expand=False, fillcolor=(230, 230, 230))
+        if 0.8 <= abs(skew) <= 8.0:
+            # estimate_skew returns the CORRECTION angle: rotate BY it.
+            img = img.rotate(skew, resample=Image.BICUBIC, expand=True, fillcolor=(230, 230, 230))
             total += skew
         else:
             break
@@ -145,8 +164,34 @@ def preprocess(image_path: str | Path, out_path: str | Path) -> tuple[Path, Prep
     out_path.parent.mkdir(parents=True, exist_ok=True)
     img = Image.open(image_path).convert("RGB")
 
+    # 1) contrast first: better edges for quad detection and OCR alike
+    photometric = _needs_light_fix(img)
+    if photometric:
+        img = _apply_light_fix(img)
+
+    # 2) fine-rotate the RAW frame (expand=True, nothing cropped)
+    img, rotation = _fine_rotate(img)
+
+    # 3) card quad -> warp; the warp is the only thing that touches geometry.
+    #    Two-pass straightening: the detected quad's top/bottom edge angle IS
+    #    the card's physical rotation (robust to background texture, unlike
+    #    projection profiles). Pre-rotate by it, re-detect the quad on the
+    #    straightened frame (edges are now axis-aligned and cleaner), then
+    #    warp. Skipping this is what left cards tilted inside the canvas.
     quad = _find_card_quad(img)
     if quad is not None:
+        import math
+
+        top = quad[1] - quad[0]  # TL -> TR
+        bot = quad[2] - quad[3]  # BL -> BR, same reading direction
+        angle = math.degrees(math.atan2(top[1], top[0]) + math.atan2(bot[1], bot[0])) / 2
+        if abs(angle) > 1.0:
+            rotated = img.rotate(
+                angle, resample=Image.BICUBIC, expand=True, fillcolor=(230, 230, 230)
+            )
+            re_quad = _find_card_quad(rotated)
+            if re_quad is not None:
+                img, quad = rotated, re_quad
         img = _warp_to_canonical(img, quad)
         method = "quad_warp"
     else:
@@ -154,7 +199,7 @@ def preprocess(image_path: str | Path, out_path: str | Path) -> tuple[Path, Prep
         if 1.25 <= aspect <= 1.90:
             # Card-shaped frame. It may BE the card edge-to-edge (render/scan)
             # or a photo with background bands; after resizing, try to crop the
-            # card quad on the contrast-boosted copy to shed any background.
+            # card quad on the resized copy to shed any background.
             resized = img.resize((CANON_W, CANON_H), Image.LANCZOS)
             inner = _find_card_quad(resized)
             if inner is not None and _quad_area(inner) >= 0.55 * CANON_W * CANON_H:
@@ -165,14 +210,6 @@ def preprocess(image_path: str | Path, out_path: str | Path) -> tuple[Path, Prep
                 method = "aspect_resize"
         else:
             method = "passthrough"
-
-    img, rotation = _fine_rotate(img)
-
-    if _needs_light_fix(img):
-        img = _apply_light_fix(img)
-        photometric = True
-    else:
-        photometric = False
 
     if method == "passthrough":
         report = PreprocessReport(
